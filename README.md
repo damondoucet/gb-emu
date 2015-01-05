@@ -1,3 +1,8 @@
+gb-emu
+------
+
+Gameboy Emulator written in Java.
+
 Setup
 -----
 
