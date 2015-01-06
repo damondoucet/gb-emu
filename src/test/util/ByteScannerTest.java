@@ -1,6 +1,7 @@
 package test.util;
 
 import main.util.ByteScanner;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,9 +22,9 @@ public class ByteScannerTest {
 
     @Test
     public void testRead() {
-        assert(_scanner.readByte() == 1);
-        assert(_scanner.readByte() == 2);
-        assert(_scanner.readByte() == 3);
+        Assert.assertEquals(_scanner.readByte(), 1);
+        Assert.assertEquals(_scanner.readByte(), 2);
+        Assert.assertEquals(_scanner.readByte(), 3);
 
         thrown.expect(IllegalStateException.class);
         _scanner.readByte();
@@ -31,32 +32,39 @@ public class ByteScannerTest {
 
     @Test
     public void testSeek() {
-        assert(_scanner.readByte() == 1);
+        Assert.assertEquals(_scanner.readByte(), 1);
         _scanner.seek(0);
-        assert(_scanner.readByte() == 1);
-        assert(_scanner.readByte() == 2);
-        assert(_scanner.readByte() == 3);
+        Assert.assertEquals(_scanner.readByte(), 1);
+        Assert.assertEquals(_scanner.readByte(), 2);
+        Assert.assertEquals(_scanner.readByte(), 3);
 
         _scanner.seek(1);
-        assert(_scanner.readByte() == 2);
+        Assert.assertEquals(_scanner.readByte(), 2);
     }
 
     @Test
     public void testReadBytes() {
-        assert(Arrays.equals(_scanner.readBytes(2), new byte[]{1, 2}));
-        assert(Arrays.equals(_scanner.readBytes(1), new byte[] { 3 }));
+        Assert.assertArrayEquals(_scanner.readBytes(2), new byte[] { 1, 2 });
+        Assert.assertArrayEquals(_scanner.readBytes(1), new byte[] { 3 });
+
+        thrown.expect(IllegalArgumentException.class);
+        _scanner.readBytes(2);
+
+        _scanner.seek(2);
+        thrown.expect(IllegalArgumentException.class);
+        _scanner.readBytes(2);
     }
 
     @Test
     public void testPeek() {
-        assert(_scanner.peek() == 1);
+        Assert.assertEquals(_scanner.peek(), 1);
 
         // Peeking shouldn't change the index
-        assert(_scanner.peek() == 1);
+        Assert.assertEquals(_scanner.peek(), 1);
 
-        assert(_scanner.peek(0) == 1);
-        assert(_scanner.peek(1) == 2);
-        assert(_scanner.peek(2) == 3);
+        Assert.assertEquals(_scanner.peek(0), 1);
+        Assert.assertEquals(_scanner.peek(1), 2);
+        Assert.assertEquals(_scanner.peek(2), 3);
 
         thrown.expect(IllegalArgumentException.class);
         _scanner.peek(3);
@@ -67,11 +75,11 @@ public class ByteScannerTest {
 
     @Test
     public void testPeekAfterRead() {
-        assert(_scanner.readByte() == 1);
+        Assert.assertEquals(_scanner.readByte(), 1);
 
-        assert(_scanner.peek(-1) == 1);
-        assert(_scanner.peek(0) == 2);
-        assert(_scanner.peek(1) == 3);
+        Assert.assertEquals(_scanner.peek(-1), 1);
+        Assert.assertEquals(_scanner.peek(0), 2);
+        Assert.assertEquals(_scanner.peek(1), 3);
 
         thrown.expect(IllegalArgumentException.class);
         _scanner.peek(2);
