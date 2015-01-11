@@ -37,7 +37,7 @@ public class MemoryBankController1 implements MemoryBankController {
 
     @Override
     public int hashCode() {
-        return HashCode.fromString(getClass().toString()).asInt();
+        return HashCode.fromString(toString()).asInt();
     }
 
     @Override
