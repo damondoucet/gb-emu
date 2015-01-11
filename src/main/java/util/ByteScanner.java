@@ -1,10 +1,17 @@
-package main.util;
+package util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import static com.google.common.base.Preconditions.*;
 
 /**
  * Utility class for scanning through an in-memory array of bytes like a file.
+ *
+ * The biggest ROMs are only a few megabytes in size, which fits very
+ * comfortably in memory.
  */
 public class ByteScanner {
     private int _index;
@@ -14,6 +21,10 @@ public class ByteScanner {
         checkArgument(bytes.length > 0);
         _index = 0;
         _bytes = bytes;
+    }
+
+    public int getIndex() {
+        return _index;
     }
 
     public void seek(int index) {
@@ -50,5 +61,9 @@ public class ByteScanner {
         byte[] ret = Arrays.copyOfRange(_bytes, _index, _index + length);
         _index += length;
         return ret;
+    }
+
+    public static ByteScanner fromFile(String path) throws IOException {
+        return new ByteScanner(Files.readAllBytes(Paths.get(path)));
     }
 }

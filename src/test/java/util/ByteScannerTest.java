@@ -1,13 +1,10 @@
-package test.util;
+package util;
 
-import main.util.ByteScanner;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import java.util.Arrays;
 
 public class ByteScannerTest {
     private ByteScanner _scanner;
