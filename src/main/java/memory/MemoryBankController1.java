@@ -32,7 +32,7 @@ import com.google.common.hash.HashCode;
 public class MemoryBankController1 implements MemoryBankController {
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass();
+        return obj != null && getClass().equals(obj.getClass());
     }
 
     @Override
