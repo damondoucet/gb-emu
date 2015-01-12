@@ -28,9 +28,11 @@ public class RegisterState {
     private final static int MAX_8BIT_REGS = 12;
 
     private final byte[] _r8Values;
+    public final Flags flags;
 
     public RegisterState() {
         _r8Values = new byte[MAX_8BIT_REGS];
+        flags = new Flags(this);
     }
 
     public byte getR8(int r8index) {

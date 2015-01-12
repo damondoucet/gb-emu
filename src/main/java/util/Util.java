@@ -1,5 +1,7 @@
 package util;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Some misc. utility functions.
  */
@@ -20,5 +22,21 @@ public final class Util {
 
     public static byte shortToLowByte(short value) {
         return (byte)value;
+    }
+
+    public static byte setBit(byte orig, int index, int value) {
+        checkArgument(value == 0 || value == 1);
+        checkArgument(index >= 0 && index < 8);
+
+        int mask = ~(1 << index);
+        int valueMask = value << index;
+
+        return (byte)((orig & mask) | valueMask);
+    }
+
+    public static byte getBit(byte value, int index) {
+        checkArgument(index >= 0 && index < 8);
+
+        return (byte)((value >> index) & 1);
     }
 }
