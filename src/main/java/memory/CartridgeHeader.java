@@ -2,6 +2,7 @@ package memory;
 
 import com.google.common.base.MoreObjects;
 import util.ByteScanner;
+import util.Util;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -304,11 +305,7 @@ public class CartridgeHeader {
     private static short readChecksum(ByteScanner scanner) {
         checkState(scanner.getIndex() == 0x14E);
 
-        // if Java had unsigned bytes, we could do
-        // return (readByte() << 8) | readByte()), but alas...
-        int high = scanner.readByte() & 0xFF;
-        int low = scanner.readByte() & 0xFF;
-        return (short)((high << 8) | low);
+        return Util.shortFromBytes(scanner.readByte(), scanner.readByte());
     }
 
     // Described as 0xE7 minus the lower byte of the sum of the bytes in
