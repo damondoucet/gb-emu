@@ -24,19 +24,36 @@ public final class Util {
         return (byte)value;
     }
 
-    public static byte setBit(byte orig, int index, int value) {
-        checkArgument(value == 0 || value == 1);
-        checkArgument(index >= 0 && index < 8);
-
+    private static int setBit(int orig, int index, int value) {
         int mask = ~(1 << index);
         int valueMask = value << index;
 
-        return (byte)((orig & mask) | valueMask);
+        return (orig & mask) | valueMask;
+    }
+
+    private static int getBit(int value, int index) {
+        return (value >> index) & 1;
+    }
+
+    public static byte setBit(byte orig, int index, int value) {
+        checkArgument(value == 0 || value == 1);
+        checkArgument(index >= 0 && index < 8);
+        return (byte)setBit((int)orig, index, value);
     }
 
     public static byte getBit(byte value, int index) {
         checkArgument(index >= 0 && index < 8);
+        return (byte)getBit((int)value, index);
+    }
 
-        return (byte)((value >> index) & 1);
+    public static short setBit(short orig, int index, int value) {
+        checkArgument(value == 0 || value == 1);
+        checkArgument(index >= 0 && index < 16);
+        return (short)setBit((int)orig, index, value);
+    }
+
+    public static short getBit(short value, int index) {
+        checkArgument(index >= 0 && index < 16);
+        return (short)getBit((int)value, index);
     }
 }

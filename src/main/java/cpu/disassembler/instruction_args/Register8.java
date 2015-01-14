@@ -1,10 +1,12 @@
-package cpu;
+package cpu.disassembler.instruction_args;
+
+import cpu.CpuState;
 
 /**
  * Represents an 8-bit register, as used by instructions (e.g., which register
  * to add in the ADD instruction).
  */
-public class Register8 {
+public class Register8 implements ValueContainer<Byte> {
     // For reasoning on these indices, look at the internals of the
     // RegisterState class.
     public final static Register8 A = new Register8(0, "A");
@@ -23,12 +25,14 @@ public class Register8 {
         _name = name;
     }
 
-    public byte get(RegisterState state) {
-        return state.getR8(_index);
+    @Override
+    public Byte get(CpuState state) {
+        return state.registerState.getR8(_index);
     }
 
-    public void set(RegisterState state, byte value) {
-        state.setR8(_index, value);
+    @Override
+    public void set(CpuState state, Byte value) {
+        state.registerState.setR8(_index, value);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cpu;
 
+import cpu.disassembler.instruction_args.Register16;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -43,19 +44,20 @@ public class FlagsTests {
         final short expectedAfterH = expectedAfterN | (1 << 5);
         final short expectedAfterC = expectedAfterH | (1 << 4);
 
-        RegisterState state = new RegisterState();
-        Assert.assertEquals(0, Register16.AF.get(state));
+        CpuState state = new CpuState();
+        Flags flags = state.registerState.flags;
+        Assert.assertEquals(0, (short) Register16.AF.get(state));
 
-        state.flags.setZ(1);
-        Assert.assertEquals(expectedAfterZ, Register16.AF.get(state));
+        flags.setZ(1);
+        Assert.assertEquals(expectedAfterZ, (short)Register16.AF.get(state));
 
-        state.flags.setN(1);
-        Assert.assertEquals(expectedAfterN, Register16.AF.get(state));
+        flags.setN(1);
+        Assert.assertEquals(expectedAfterN, (short)Register16.AF.get(state));
 
-        state.flags.setH(1);
-        Assert.assertEquals(expectedAfterH, Register16.AF.get(state));
+        flags.setH(1);
+        Assert.assertEquals(expectedAfterH, (short)Register16.AF.get(state));
 
-        state.flags.setC(1);
-        Assert.assertEquals(expectedAfterC, Register16.AF.get(state));
+        flags.setC(1);
+        Assert.assertEquals(expectedAfterC, (short)Register16.AF.get(state));
     }
 }

@@ -1,10 +1,12 @@
-package cpu;
+package cpu.disassembler.instruction_args;
+
+import cpu.CpuState;
 
 /**
  * Represents a 16-bit register as used by instructions (e.g., which register
  * to add in the ADD instruction).
  */
-public class Register16 {
+public class Register16 implements ValueContainer<Short> {
     public final static Register16 AF = new Register16(0, "AF");
     public final static Register16 BC = new Register16(1, "BC");
     public final static Register16 DE = new Register16(2, "DE");
@@ -20,12 +22,14 @@ public class Register16 {
         _name = name;
     }
 
-    public short get(RegisterState state) {
-        return state.getR16(_index);
+    @Override
+    public Short get(CpuState state) {
+        return state.registerState.getR16(_index);
     }
 
-    public void set(RegisterState state, short value) {
-        state.setR16(_index, value);
+    @Override
+    public void set(CpuState state, Short value) {
+        state.registerState.setR16(_index, value);
     }
 
     @Override
