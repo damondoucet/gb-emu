@@ -2,7 +2,7 @@
     Generate an instruction class shell.
 
     Arguments:
-        Mnemonic Class <arg 1 type> <arg 1 name> [<arg 2 type> <arg 2 name> [...]]
+        Mnemonic Class [<arg 1 type> <arg 1 name> [<arg 2 type> <arg 2 name> [...]]]
 
         The names should be in lowerCamelCase.
 
@@ -12,7 +12,30 @@
 
 import argparse
 
-FORMAT = """public static class %sInstruction implements Instruction {
+NO_ARGS_FORMAT = """public static class %sInstruction implements Instruction {
+    @Override
+    public boolean equals(Object rhs) {
+        return rhs != null && getClass() == rhs.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "%s";
+    }
+
+    @Override
+    public void execute(CpuState state) {
+
+    }
+}"""
+
+
+ARGS_FORMAT = """public static class %sInstruction implements Instruction {
     %s
 
     public %sInstruction(%s) {
@@ -83,7 +106,7 @@ def create_equals_str(arguments):
         "%s == other.%s" % (arg.field_name(), arg.field_name())
             for arg in arguments])
 
-def create_class_string(mnemonic, class_name, arguments):
+def create_class_string_with_args(mnemonic, class_name, arguments):
     field_strs = "\n    ".join([arg.field_str() for arg in arguments])
     field_names_as_args = ", ".join([arg.field_name() for arg in arguments])
     arg_str_with_types = ", ".join([arg.arg_str() for arg in arguments])
@@ -94,7 +117,7 @@ def create_class_string(mnemonic, class_name, arguments):
     to_string_formats = ", ".join([arg.format_specifier() for arg in arguments])
     to_string_values = ", ".join([arg.to_string_value() for arg in arguments])
 
-    return FORMAT % (
+    return ARGS_FORMAT % (
         class_name,
         field_strs,
         class_name,
@@ -108,10 +131,20 @@ def create_class_string(mnemonic, class_name, arguments):
         to_string_formats,
         to_string_values)
 
+def create_class_without_args(mnemonic, class_name):
+    return NO_ARGS_FORMAT % (class_name, mnemonic)
+
+def create_class_string(mnemonic, class_name, arguments):
+    return create_class_string_with_args(mnemonic, class_name, arguments) \
+        if len(arguments) > 0 else create_class_without_args(mnemonic, class_name)
+
 # strs will be a list where even-index elements are types and odd-index
 # elements are lowerCamelCase names. There must be an even number of them.
 # Returns a list of Argument objects.
 def strs_to_arguments(strs):
+    if not strs:
+        return []
+
     if len(strs) % 2 != 0:
         raise Exception("Missing type or field name in arguments list (%s)" % \
             ", ".join(strs))
@@ -128,7 +161,7 @@ def main():
     parser.add_argument("class_name",
         help="Class name (without Instruction)")
 
-    parser.add_argument("arguments", nargs="+",
+    parser.add_argument("arguments", nargs="?",
         help="Pairs of type and lowerCamelCase names, space-separated")
 
     args = parser.parse_args()

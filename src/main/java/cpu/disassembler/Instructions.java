@@ -1,6 +1,7 @@
 package cpu.disassembler;
 
 import cpu.CpuState;
+import cpu.disassembler.instruction_args.Register8;
 import cpu.disassembler.instruction_args.ValueContainer;
 import util.Util;
 
@@ -34,6 +35,128 @@ public final class Instructions {
     }
 
     // TODO(ddoucet): rest of instructions
+
+    public static class RlaInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "RLA";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            int oldCarry = state.registerState.flags.getC();
+            byte oldValue = Register8.A.get(state);
+            byte newValue = (byte)((oldValue << 1) | oldCarry);
+            int newCarry = (oldValue & 0xFF) >>> 7;
+
+            Register8.A.set(state, newValue);
+            state.registerState.flags.setC(newCarry);
+            state.registerState.flags.setZ(newValue == 0 ? 1 : 0);
+            state.registerState.flags.setN(0);
+            state.registerState.flags.setH(0);
+        }
+    }
+
+    public static class RraInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "RRA";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            int shiftedCarry = state.registerState.flags.getC() << 7;
+            byte oldValue = Register8.A.get(state);
+            byte newValue = (byte)(((oldValue & 0xFF) >>> 1) | shiftedCarry);
+            int carry = oldValue & 1;
+
+            Register8.A.set(state, newValue);
+            state.registerState.flags.setC(carry);
+            state.registerState.flags.setZ(newValue == 0 ? 1 : 0);
+            state.registerState.flags.setN(0);
+            state.registerState.flags.setH(0);
+        }
+    }
+
+    public static class RrcaInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "RRCA";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            byte oldValue = Register8.A.get(state);
+            int newCarry = oldValue & 1;
+            byte newValue = (byte)(((oldValue & 0xFF) >>> 1) | (newCarry << 7));
+
+            Register8.A.set(state, newValue);
+            state.registerState.flags.setC(newCarry);
+            state.registerState.flags.setZ(newValue == 0 ? 1 : 0);
+            state.registerState.flags.setN(0);
+            state.registerState.flags.setH(0);
+        }
+    }
+
+    public static class RlcaInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "RLCA";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            byte oldValue = Register8.A.get(state);
+            int newCarry = (oldValue & 0xFF) >>> 7;
+            byte newValue = (byte)((oldValue << 1) | newCarry);
+
+            Register8.A.set(state, newValue);
+            state.registerState.flags.setC(newCarry);
+            state.registerState.flags.setZ(newValue == 0 ? 1 : 0);
+            state.registerState.flags.setN(0);
+            state.registerState.flags.setH(0);
+        }
+    }
 
     // Performs a rotate-left on an 8-bit value container and sets the carry
     // flag to be the original 7th bit.
