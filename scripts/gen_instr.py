@@ -161,7 +161,7 @@ def main():
     parser.add_argument("class_name",
         help="Class name (without Instruction)")
 
-    parser.add_argument("arguments", nargs="?",
+    parser.add_argument("arguments", nargs="*",
         help="Pairs of type and lowerCamelCase names, space-separated")
 
     args = parser.parse_args()
