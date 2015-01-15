@@ -5,7 +5,6 @@ import cpu.disassembler.instruction_args.Register8;
 import junit.framework.Assert;
 import org.junit.Test;
 
-// TODO(ddoucet): add ZF tests
 /**
  * Tests bitwise instructions:
  *      RLC, RRC, RL, RR, SLA, SRA, SRL, SWAP, BIT, RES, SET
