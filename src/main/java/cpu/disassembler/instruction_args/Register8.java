@@ -6,7 +6,7 @@ import cpu.CpuState;
  * Represents an 8-bit register, as used by instructions (e.g., which register
  * to add in the ADD instruction).
  */
-public class Register8 implements ValueContainer<Byte> {
+public class Register8 implements SettableValueContainer<Byte> {
     // For reasoning on these indices, look at the internals of the
     // RegisterState class.
     public final static Register8 A = new Register8(0, "A");

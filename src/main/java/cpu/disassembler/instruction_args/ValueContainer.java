@@ -3,10 +3,9 @@ package cpu.disassembler.instruction_args;
 import cpu.CpuState;
 
 /**
- * Represents anything that could hold a value for use by instructions.
- * Register8, Register16, and MemoryAddress all implement this.
+ * Represents anything that can hold a value. SettableValueContainer implements
+ * this (e.g. registers), as do ByteConst and ShortConst.
  */
 public interface ValueContainer<T> {
     public T get(CpuState state);
-    public void set(CpuState state, T value);
 }

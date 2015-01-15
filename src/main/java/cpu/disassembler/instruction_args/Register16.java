@@ -6,7 +6,7 @@ import cpu.CpuState;
  * Represents a 16-bit register as used by instructions (e.g., which register
  * to add in the ADD instruction).
  */
-public class Register16 implements ValueContainer<Short> {
+public class Register16 implements SettableValueContainer<Short> {
     public final static Register16 AF = new Register16(0, "AF");
     public final static Register16 BC = new Register16(1, "BC");
     public final static Register16 DE = new Register16(2, "DE");

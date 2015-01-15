@@ -6,7 +6,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 /**
  * Used when an instruction dereferences the 16-bit register HL as a byte.
  */
-public class HLBytePointer implements ValueContainer<Byte> {
+public class HLBytePointer implements SettableValueContainer<Byte> {
     // TODO(ddoucet)
     @Override
     public Byte get(CpuState state) {

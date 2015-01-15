@@ -2,11 +2,12 @@ package cpu.disassembler.instruction_args;
 
 import cpu.CpuState;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import util.Util;
 
 /**
  * 16-bit pointer for use as an instruction argument.
  */
-public class ShortPointer implements ValueContainer<Short> {
+public class ShortPointer implements SettableValueContainer<Short> {
     // Memory addresses in the Gameboy are 16 bits long.
     private final short _address;
 
@@ -37,6 +38,6 @@ public class ShortPointer implements ValueContainer<Short> {
 
     @Override
     public String toString() {
-        return Integer.toHexString(_address).toUpperCase();
+        return Util.shortToHexString(_address);
     }
 }
