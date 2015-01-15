@@ -11,22 +11,23 @@ import util.Util;
  * involved with getting and setting register values, both 8-bit and 16-bit.
  */
 public class RegisterTests {
+    private static Register8[] _r8s = new Register8[] {
+            Register8.A, Register8.B, Register8.C, Register8.D,
+            Register8.E, Register8.H, Register8.L
+    };
+
+    private static Register16[] _r16s = new Register16[] {
+            Register16.AF, Register16.BC, Register16.DE,
+            Register16.HL, Register16.SP, Register16.PC
+    };
+
     // Initially, all registers should be 0
     private void assertAllRegs0(CpuState state) {
-        Assert.assertEquals(0, (byte)Register8.A.get(state));
-        Assert.assertEquals(0, (byte)Register8.B.get(state));
-        Assert.assertEquals(0, (byte)Register8.C.get(state));
-        Assert.assertEquals(0, (byte)Register8.D.get(state));
-        Assert.assertEquals(0, (byte)Register8.E.get(state));
-        Assert.assertEquals(0, (byte)Register8.H.get(state));
-        Assert.assertEquals(0, (byte)Register8.L.get(state));
+        for (Register8 r8 : _r8s)
+            Assert.assertEquals(0, (byte)r8.get(state));
 
-        Assert.assertEquals(0, (short)Register16.AF.get(state));
-        Assert.assertEquals(0, (short)Register16.BC.get(state));
-        Assert.assertEquals(0, (short)Register16.DE.get(state));
-        Assert.assertEquals(0, (short)Register16.HL.get(state));
-        Assert.assertEquals(0, (short)Register16.SP.get(state));
-        Assert.assertEquals(0, (short)Register16.PC.get(state));
+        for (Register16 r16 : _r16s)
+            Assert.assertEquals(0, (short)r16.get(state));
     }
 
     private void testRegister8(CpuState state, Register8 reg) {
@@ -42,13 +43,8 @@ public class RegisterTests {
         assertAllRegs0(state);
 
         // Test getting and setting each 8-bit register
-        testRegister8(state, Register8.A);
-        testRegister8(state, Register8.B);
-        testRegister8(state, Register8.C);
-        testRegister8(state, Register8.D);
-        testRegister8(state, Register8.E);
-        testRegister8(state, Register8.H);
-        testRegister8(state, Register8.L);
+        for (Register8 r8 : _r8s)
+            testRegister8(state, r8);
     }
 
     private void testRegister16(CpuState state, Register16 reg) {
@@ -64,12 +60,8 @@ public class RegisterTests {
         assertAllRegs0(state);
 
         // Test getting and setting each 16-bit register
-        testRegister16(state, Register16.AF);
-        testRegister16(state, Register16.BC);
-        testRegister16(state, Register16.DE);
-        testRegister16(state, Register16.HL);
-        testRegister16(state, Register16.SP);
-        testRegister16(state, Register16.PC);
+        for (Register16 r16 : _r16s)
+            testRegister16(state, r16);
     }
 
     private void testSetting16Modifies8(CpuState state,
