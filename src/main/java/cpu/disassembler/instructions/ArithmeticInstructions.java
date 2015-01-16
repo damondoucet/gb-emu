@@ -15,7 +15,8 @@ import java.util.Objects;
  *      ADD, ADC, SUB, SBC
  *      INC, DEC,
  *      SCF, CCF
- *      CP, DAA
+ *      CP,
+ *      DAA
  */
 public final class ArithmeticInstructions {
     private ArithmeticInstructions() {}
@@ -425,6 +426,50 @@ public final class ArithmeticInstructions {
         @Override
         public void execute(CpuState state) {
             sub16(state, _container, (short)1);
+        }
+    }
+
+    public static class ScfInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "SCF";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            state.registerState.flags.setC(1);
+        }
+    }
+
+    public static class CcfInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "CCF";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            state.registerState.flags.setC(0);
         }
     }
 }
