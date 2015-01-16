@@ -144,10 +144,12 @@ public class ArithmeticInstructionTests {
 
         testInstr8(instr, (byte)1, (byte)0, 1, (byte)0, 0, 0, 1);
         testInstr8(instr, (byte)0, (byte)0, 1, (byte)0xff, 1, 1, 1);
-        testInstr8(instr, (byte)0x10, (byte)0x0f, 1, (byte)0, 0, 0, 1);
+        testInstr8(instr, (byte)0x10, (byte)0x0f, 1, (byte)0, 0, 1, 1);
+        testInstr8(instr, (byte)0x01, (byte)0x10, 1, (byte)0xf0, 1, 0, 1);
         testInstr8(instr, (byte)0xe, (byte)0x0e, 1, (byte)0xff, 1, 1, 1);
-        testInstr8(instr, (byte)0xf, (byte)0x0f, 1, (byte)0xff, 1, 0, 1);
-        testInstr8(instr, (byte)0xe0, (byte)0xef, 1, (byte)0xf0, 1, 0, 1);
+        testInstr8(instr, (byte)0xf, (byte)0x0f, 1, (byte)0xff, 1, 1, 1);
+        testInstr8(instr, (byte)0xe0, (byte)0xef, 1, (byte)0xf0, 1, 1, 1);
         testInstr8(instr, (byte)0xf0, (byte)0x00, 1, (byte)0xef, 0, 1, 1);
+        testInstr8(instr, (byte)0xff, (byte)0xff, 1, (byte)0xff, 1, 1, 1);
     }
 }
