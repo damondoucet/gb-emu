@@ -2,6 +2,7 @@ package cpu;
 
 import memory.Memory;
 import memory.MemoryBankController;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * TODO(ddoucet): is CpuState the best name for this? It should include
@@ -20,5 +21,10 @@ public class CpuState {
         interruptsEnabled = true;
         registerState = new RegisterState();
         memory = new Memory(mbc);
+    }
+
+    public void halt() {
+        // TODO(ddoucet)
+        throw new NotImplementedException();
     }
 }

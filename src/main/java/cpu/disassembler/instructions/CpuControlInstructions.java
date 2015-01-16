@@ -1,0 +1,101 @@
+package cpu.disassembler.instructions;
+
+import cpu.CpuState;
+import cpu.disassembler.Instruction;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+/**
+ * Instructions for controlling the CPU:
+ *      HALT, STOP,
+ *      EI, DI
+ */
+public class CpuControlInstructions {
+    public static class EiInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "EI";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            state.interruptsEnabled = true;
+        }
+    }
+
+    public static class DiInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "DI";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            state.interruptsEnabled = false;
+        }
+    }
+
+    public static class HaltInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "HALT";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            state.halt();
+        }
+    }
+
+    public static class StopInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "STOP";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            // We'll cross this bridge if any ROMs actually need this instr...
+            throw new NotImplementedException();
+        }
+    }
+}
