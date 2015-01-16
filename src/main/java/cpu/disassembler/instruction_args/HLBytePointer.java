@@ -7,15 +7,16 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * Used when an instruction dereferences the 16-bit register HL as a byte.
  */
 public class HLBytePointer implements SettableValueContainer<Byte> {
-    // TODO(ddoucet)
     @Override
     public Byte get(CpuState state) {
-        throw new NotImplementedException();
+        short address = Register16.HL.get(state);
+        return state.memory.readByte(address);
     }
 
     @Override
     public void set(CpuState state, Byte value) {
-        throw new NotImplementedException();
+        short address = Register16.HL.get(state);
+        state.memory.writeByte(address, value);
     }
 
     @Override

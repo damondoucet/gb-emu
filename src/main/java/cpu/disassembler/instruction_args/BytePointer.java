@@ -15,15 +15,14 @@ public class BytePointer implements SettableValueContainer<Byte> {
         _address = address;
     }
 
-    // TODO(ddoucet): get+set
     @Override
     public Byte get(CpuState state) {
-        throw new NotImplementedException();
+        return state.memory.readByte(_address);
     }
 
     @Override
     public void set(CpuState state, Byte value) {
-        throw new NotImplementedException();
+        state.memory.writeByte(_address, value);
     }
 
     @Override

@@ -15,15 +15,14 @@ public class ShortPointer implements SettableValueContainer<Short> {
         _address = address;
     }
 
-    // TODO(ddoucet): get+set
     @Override
     public Short get(CpuState state) {
-        throw new NotImplementedException();
+        return state.memory.readShort(_address);
     }
 
     @Override
     public void set(CpuState state, Short value) {
-        throw new NotImplementedException();
+        state.memory.writeShort(_address, value);
     }
 
     @Override
