@@ -70,4 +70,10 @@ public final class Util {
     public static String shortToHexString(short s) {
         return String.format("%04X", s).toUpperCase();
     }
+
+    public static short swapBytes(short value) {
+        short newLow = shortToHighByte(value);
+        short newHigh = (short)(shortToLowByte(value) << 8);
+        return (short)(newLow | newHigh);
+    }
 }
