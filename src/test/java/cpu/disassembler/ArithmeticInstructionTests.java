@@ -152,4 +152,35 @@ public class ArithmeticInstructionTests {
         testInstr8(instr, (byte)0xf0, (byte)0x00, 1, (byte)0xef, 0, 1, 1);
         testInstr8(instr, (byte)0xff, (byte)0xff, 1, (byte)0xff, 1, 1, 1);
     }
+
+    /*private void testDaaCase(
+            byte aValue,
+            int carry,
+            int halfCarry,
+            byte expectedValue,
+            int expectedCarry,
+            int expectedHalfCarry) {
+        CpuState state = new CpuState();
+
+        Register8.A.set(state, aValue);
+        state.registerState.flags.setC(carry);
+        state.registerState.flags.setH(halfCarry);
+
+        new ArithmeticInstructions.DaaInstruction().execute(state);
+
+        Assert.assertEquals(expectedValue, (byte)Register8.A.get(state));
+        Assert.assertEquals(expectedCarry, state.registerState.flags.getC());
+        Assert.assertEquals(expectedHalfCarry, state.registerState.flags.getH());
+
+        int isZero = expectedValue == 0 ? 1 : 0;
+        Assert.assertEquals(isZero, state.registerState.flags.getZ());
+    }
+
+    @Test
+    public void testDaa() {
+        testDaaCase((byte)0, 0, 0, (byte)0, 0, 0);
+        testDaaCase((byte)0x10, 0, 1, (byte)0x16, 0, 0);
+        testDaaCase((byte)0, 1, 0, (byte)0x60, 1, 0);
+        testDaaCase((byte)0x11, 1, 1, (byte)0x77, 1, 0);
+    }*/
 }

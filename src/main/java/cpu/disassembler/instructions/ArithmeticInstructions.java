@@ -6,6 +6,7 @@ import cpu.disassembler.instruction_args.Register16;
 import cpu.disassembler.instruction_args.Register8;
 import cpu.disassembler.instruction_args.SettableValueContainer;
 import cpu.disassembler.instruction_args.ValueContainer;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.Util;
 
 import java.util.Objects;
@@ -448,6 +449,8 @@ public final class ArithmeticInstructions {
         @Override
         public void execute(CpuState state) {
             state.registerState.flags.setC(1);
+            state.registerState.flags.setN(0);
+            state.registerState.flags.setH(0);
         }
     }
 
@@ -469,7 +472,86 @@ public final class ArithmeticInstructions {
 
         @Override
         public void execute(CpuState state) {
-            state.registerState.flags.setC(0);
+            int newCarry = ~state.registerState.flags.getC() & 1;
+            state.registerState.flags.setC(newCarry);
+            state.registerState.flags.setN(0);
+            state.registerState.flags.setH(0);
+        }
+    }
+
+    public static class CpInstruction implements Instruction {
+        private final ValueContainer<Byte> _container;
+
+        public CpInstruction(ValueContainer<Byte> container) {
+            _container = container;
+        }
+
+        @Override
+        public boolean equals(Object rhs) {
+            if (rhs == null || getClass() != rhs.getClass())
+                return false;
+            CpInstruction other = (CpInstruction)rhs;
+            return _container == other._container;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_container);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("CP %s", _container.toString());
+        }
+
+        // Compare is the same as doing a subtraction and throwing away the
+        // result.
+        private static class NoopSettableValueContainer
+                implements SettableValueContainer<Byte> {
+            private final byte _value;
+
+            public NoopSettableValueContainer(byte value) {
+                _value = value;
+            }
+
+            @Override
+            public Byte get(CpuState state) {
+                return _value;
+            }
+
+            @Override
+            public void set(CpuState state, Byte value) { }
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            sub8(
+                    state,
+                    new NoopSettableValueContainer(Register8.A.get(state)),
+                    _container.get(state),
+                    false);
+        }
+    }
+
+    public static class DaaInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "DAA";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            throw new NotImplementedException();
         }
     }
 }
