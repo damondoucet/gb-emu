@@ -4,6 +4,7 @@ import cpu.CpuState;
 import cpu.disassembler.Instruction;
 import cpu.disassembler.instruction_args.Register8;
 import cpu.disassembler.instruction_args.SettableValueContainer;
+import cpu.disassembler.instruction_args.ValueContainer;
 import util.Util;
 
 import java.util.Objects;
@@ -568,6 +569,143 @@ public final class BitwiseInstructions {
         public void execute(CpuState state) {
             byte newValue = Util.setBit(_container.get(state), _bitIndex, 1);
             _container.set(state, newValue);
+        }
+    }
+
+    public static class AndInstruction implements Instruction {
+        private final ValueContainer<Byte> _container;
+
+        public AndInstruction(ValueContainer<Byte> container) {
+            _container = container;
+        }
+
+        @Override
+        public boolean equals(Object rhs) {
+            if (rhs == null || getClass() != rhs.getClass())
+                return false;
+            AndInstruction other = (AndInstruction)rhs;
+            return _container == other._container;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_container);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("AND %s", _container.toString());
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            byte newValue = (byte)(Register8.A.get(state) & _container.get(state));
+            Register8.A.set(state, newValue);
+
+            state.registerState.flags.setZ(newValue == 0 ? 1 : 0);
+            state.registerState.flags.setN(0);
+            state.registerState.flags.setH(1);
+            state.registerState.flags.setC(0);
+        }
+    }
+
+    public static class OrInstruction implements Instruction {
+        private final ValueContainer<Byte> _container;
+
+        public OrInstruction(ValueContainer<Byte> container) {
+            _container = container;
+        }
+
+        @Override
+        public boolean equals(Object rhs) {
+            if (rhs == null || getClass() != rhs.getClass())
+                return false;
+            AndInstruction other = (AndInstruction)rhs;
+            return _container == other._container;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_container);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("OR %s", _container.toString());
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            byte newValue = (byte)(Register8.A.get(state) | _container.get(state));
+            Register8.A.set(state, newValue);
+
+            state.registerState.flags.setZ(newValue == 0 ? 1 : 0);
+            state.registerState.flags.setN(0);
+            state.registerState.flags.setH(0);
+            state.registerState.flags.setC(0);
+        }
+    }
+
+    public static class XorInstruction implements Instruction {
+        private final ValueContainer<Byte> _container;
+
+        public XorInstruction(ValueContainer<Byte> container) {
+            _container = container;
+        }
+
+        @Override
+        public boolean equals(Object rhs) {
+            if (rhs == null || getClass() != rhs.getClass())
+                return false;
+            AndInstruction other = (AndInstruction)rhs;
+            return _container == other._container;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_container);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("XOR %s", _container.toString());
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            byte newValue = (byte)(Register8.A.get(state) ^ _container.get(state));
+            Register8.A.set(state, newValue);
+
+            state.registerState.flags.setZ(newValue == 0 ? 1 : 0);
+            state.registerState.flags.setN(0);
+            state.registerState.flags.setH(0);
+            state.registerState.flags.setC(0);
+        }
+    }
+
+    public static class CplInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "CPL";
+        }
+
+        @Override
+        public void execute(CpuState state) {
+            byte newValue = (byte)(Register8.A.get(state) ^ 0xFF);
+            Register8.A.set(state, newValue);
+
+            state.registerState.flags.setN(1);
+            state.registerState.flags.setH(1);
         }
     }
 }
