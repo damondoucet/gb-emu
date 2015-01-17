@@ -2,9 +2,7 @@ package cpu.disassembler.instructions;
 
 import cpu.EmulatorState;
 import cpu.disassembler.Instruction;
-import cpu.disassembler.instruction_args.Register16;
-import cpu.disassembler.instruction_args.SettableValueContainer;
-import cpu.disassembler.instruction_args.ValueContainer;
+import cpu.disassembler.instruction_args.*;
 import util.Util;
 
 import java.util.Objects;
@@ -35,6 +33,24 @@ public final class MemoryInstructions {
 
         updateSp(state, 2);
         return returnValue;
+    }
+
+    private static void load8(
+            EmulatorState state,
+            SettableValueContainer<Byte> dest,
+            ValueContainer<Byte> src) {
+        dest.set(state, src.get(state));
+    }
+
+    private static void ldAHL(EmulatorState state, boolean writeToHL) {
+        SettableValueContainer<Byte> bytePtr = new DereferencedRegisterByte(
+                Register16.HL);
+
+        if (writeToHL)
+            load8(state, bytePtr, Register8.A);
+        else
+            load8(state, Register8.A, bytePtr);
+
     }
 
     public static class PushInstruction implements Instruction {
@@ -96,6 +112,268 @@ public final class MemoryInstructions {
         @Override
         public void execute(EmulatorState state) {
             _container.set(state, pop(state));
+        }
+    }
+
+    public static class Ld8Instruction implements Instruction {
+        private final SettableValueContainer<Byte> _dest;
+        private final ValueContainer<Byte> _src;
+
+        public Ld8Instruction(SettableValueContainer<Byte> dest, ValueContainer<Byte> src) {
+            _dest = dest;
+            _src = src;
+        }
+
+        @Override
+        public boolean equals(Object rhs) {
+            if (rhs == null || getClass() != rhs.getClass())
+                return false;
+            Ld8Instruction other = (Ld8Instruction)rhs;
+            return _dest == other._dest &&
+                    _src == other._src;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_dest, _src);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("LD %s, %s", _dest.toString(), _src.toString());
+        }
+
+        @Override
+        public void execute(EmulatorState state) {
+            load8(state, _dest, _src);
+        }
+    }
+
+    public static class Ld16Instruction implements Instruction {
+        private final SettableValueContainer<Short> _dest;
+        private final ValueContainer<Short> _src;
+
+        public Ld16Instruction(SettableValueContainer<Short> dest, ValueContainer<Short> src) {
+            _dest = dest;
+            _src = src;
+        }
+
+        @Override
+        public boolean equals(Object rhs) {
+            if (rhs == null || getClass() != rhs.getClass())
+                return false;
+            Ld16Instruction other = (Ld16Instruction)rhs;
+            return _dest == other._dest &&
+                    _src == other._src;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_dest, _src);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("LD %s, %s", _dest.toString(), _src.toString());
+        }
+
+        @Override
+        public void execute(EmulatorState state) {
+            _dest.set(state, _src.get(state));
+        }
+    }
+
+    // Load A to/from HL and increment HL.
+    // _writeToHL = true -> LDI (HL), A
+    // _writeToHL = false -> LDI A, (HL)
+    public static class LdiInstruction implements Instruction {
+        private final boolean _writeToHL;
+
+        private LdiInstruction(boolean writeToHL) {
+            _writeToHL = writeToHL;
+        }
+
+        public static LdiInstruction LdiFromHL() {
+            return new LdiInstruction(false);
+        }
+
+        public static LdiInstruction LdiToHL() {
+            return new LdiInstruction(true);
+        }
+
+        @Override
+        public boolean equals(Object rhs) {
+            if (rhs == null || getClass() != rhs.getClass())
+                return false;
+            LdiInstruction other = (LdiInstruction)rhs;
+            return _writeToHL == other._writeToHL;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_writeToHL);
+        }
+
+        @Override
+        public String toString() {
+            return _writeToHL ? "LDI (HL), A" : "LDI A, (HL)";
+        }
+
+        @Override
+        public void execute(EmulatorState state) {
+            ldAHL(state, _writeToHL);
+            Register16.HL.set(state, (short) (Register16.HL.get(state) + 1));
+        }
+    }
+
+    // Load A to/from HL and decrement HL.
+    // _writeToHL = true -> LDI (HL), A
+    // _writeToHL = false -> LDI A, (HL)
+    public static class LddInstruction implements Instruction {
+        private final boolean _writeToHL;
+
+        private LddInstruction(boolean writeToHL) {
+            _writeToHL = writeToHL;
+        }
+
+        public static LddInstruction LddFromHL() {
+            return new LddInstruction(false);
+        }
+
+        public static LddInstruction LddToHL() {
+            return new LddInstruction(true);
+        }
+
+        @Override
+        public boolean equals(Object rhs) {
+            if (rhs == null || getClass() != rhs.getClass())
+                return false;
+            LddInstruction other = (LddInstruction)rhs;
+            return _writeToHL == other._writeToHL;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_writeToHL);
+        }
+
+        @Override
+        public String toString() {
+            return _writeToHL ? "LDD (HL), A" : "LDD A, (HL)";
+        }
+
+        @Override
+        public void execute(EmulatorState state) {
+            ldAHL(state, _writeToHL);
+            Register16.HL.set(state, (short)(Register16.HL.get(state) - 1));
+        }
+    }
+
+    // Represents the LD A, ($FF00+C) and LD ($FF00+C), A instructions.
+    public static class LdIoPortInstruction implements Instruction {
+        private final boolean _writeToPort;
+
+        private LdIoPortInstruction(boolean writeToPort) {
+            _writeToPort = writeToPort;
+        }
+
+        public static LdIoPortInstruction LdFromIoPort() {
+            return new LdIoPortInstruction(false);
+        }
+
+        public static LdIoPortInstruction LdToIoPort() {
+            return new LdIoPortInstruction(true);
+        }
+
+        @Override
+        public boolean equals(Object rhs) {
+            if (rhs == null || getClass() != rhs.getClass())
+                return false;
+            LdIoPortInstruction other = (LdIoPortInstruction)rhs;
+            return _writeToPort == other._writeToPort;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_writeToPort);
+        }
+
+        @Override
+        public String toString() {
+            return _writeToPort ? "LD (FF00+C), A" : "LD A, (FF00+C)";
+        }
+
+        @Override
+        public void execute(EmulatorState state) {
+            short address = (short)(0xFF00 + Register8.C.get(state));
+            SettableValueContainer<Byte> bytePtr = new BytePointer(address);
+
+            if (_writeToPort)
+                load8(state, bytePtr, Register8.A);
+            else
+                load8(state, Register8.A, bytePtr);
+        }
+    }
+
+    public static class LdHLToSpInstruction implements Instruction {
+        @Override
+        public boolean equals(Object rhs) {
+            return rhs != null && getClass() == rhs.getClass();
+        }
+
+        @Override
+        public int hashCode() {
+            return getClass().hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "LD SP, HL";
+        }
+
+        @Override
+        public void execute(EmulatorState state) {
+            Register16.SP.set(state, Register16.HL.get(state));
+        }
+    }
+
+    public static class LdSpToHlInstruction implements Instruction {
+        private final byte _offset;
+
+        public LdSpToHlInstruction(byte offset) {
+            _offset = offset;
+        }
+
+        @Override
+        public boolean equals(Object rhs) {
+            if (rhs == null || getClass() != rhs.getClass())
+                return false;
+            LdSpToHlInstruction other = (LdSpToHlInstruction)rhs;
+            return _offset == other._offset;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(_offset);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("LD HL, SP+%s", Util.byteToHexString(_offset));
+        }
+
+        @Override
+        public void execute(EmulatorState state) {
+            short oldValue = Register16.SP.get(state);
+            short newValue = (short)(oldValue + _offset);
+            Register16.HL.set(state, newValue);
+
+            state.registerState.flags.setZ(0);
+            state.registerState.flags.setN(0);
+            state.registerState.flags.setH(
+                    Util.add16WouldHalfCarry(oldValue, _offset) ? 1 : 0);
+            state.registerState.flags.setC(
+                    Util.add16WouldCarry(oldValue, _offset) ? 1 : 0);
         }
     }
 }

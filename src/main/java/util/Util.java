@@ -76,4 +76,15 @@ public final class Util {
         short newHigh = (short)(shortToLowByte(value) << 8);
         return (short)(newLow | newHigh);
     }
+
+    public static boolean add16WouldCarry(short lhs, short rhs) {
+        return (lhs & 0xFFFF) + (rhs & 0xFFFF) > 65535;
+    }
+
+    public static boolean add16WouldHalfCarry(short lhs, short rhs) {
+        // half-carry for 16-bit is the most recent half-carry
+        short lhsHalf = Util.clearTopNibble(lhs);
+        short rhsHalf = Util.clearTopNibble(rhs);
+        return lhsHalf + rhsHalf >= (1 << 12);
+    }
 }

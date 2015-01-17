@@ -49,13 +49,6 @@ public final class ArithmeticInstructions {
         state.registerState.flags.setC(newCarry);
     }
 
-    private static boolean add16WouldHalfCarry(short lhs, short rhs) {
-        // half-carry for 16-bit is the most recent half-carry
-        short lhsHalf = Util.clearTopNibble(lhs);
-        short rhsHalf = Util.clearTopNibble(rhs);
-        return lhsHalf + rhsHalf >= (1 << 12);
-    }
-
     // Add a given value to the value in the destination and store the result
     // in the destination, in addition to setting any necessary flags.
     private static void add16(
@@ -69,10 +62,8 @@ public final class ArithmeticInstructions {
 
         state.registerState.flags.setZ(newValue == 0 ? 1 : 0);
         state.registerState.flags.setN(0);
-        state.registerState.flags.setH(add16WouldHalfCarry(a, val) ? 1 : 0);
-
-        int carry = (a & 0xFFFF) + (val & 0xFFFF) > 65535 ? 1 : 0;
-        state.registerState.flags.setC(carry);
+        state.registerState.flags.setH(Util.add16WouldHalfCarry(a, val) ? 1 : 0);
+        state.registerState.flags.setC(Util.add16WouldCarry(a, val) ? 1 : 0);
     }
 
     // Same as above except for subtraction.
