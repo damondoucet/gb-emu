@@ -29,7 +29,7 @@ NO_ARGS_FORMAT = """public static class %sInstruction implements Instruction {
     }
 
     @Override
-    public void execute(CpuState state) {
+    public void execute(EmulatorState state) {
 
     }
 }"""
@@ -61,7 +61,7 @@ ARGS_FORMAT = """public static class %sInstruction implements Instruction {
     }
 
     @Override
-    public void execute(CpuState state) {
+    public void execute(EmulatorState state) {
 
     }
 }"""

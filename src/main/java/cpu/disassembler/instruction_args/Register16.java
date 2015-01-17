@@ -1,6 +1,6 @@
 package cpu.disassembler.instruction_args;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 
 /**
  * Represents a 16-bit register as used by instructions (e.g., which register
@@ -23,12 +23,12 @@ public class Register16 implements SettableValueContainer<Short> {
     }
 
     @Override
-    public Short get(CpuState state) {
+    public Short get(EmulatorState state) {
         return state.registerState.getR16(_index);
     }
 
     @Override
-    public void set(CpuState state, Short value) {
+    public void set(EmulatorState state, Short value) {
         state.registerState.setR16(_index, value);
     }
 

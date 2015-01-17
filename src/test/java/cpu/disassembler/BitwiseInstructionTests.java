@@ -1,6 +1,6 @@
 package cpu.disassembler;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 import cpu.disassembler.instruction_args.Register8;
 import cpu.disassembler.instructions.BitwiseInstructions;
 import junit.framework.Assert;
@@ -30,7 +30,7 @@ public class BitwiseInstructionTests {
             int carry,
             byte expectedValue,
             int expectedCarry) {
-        CpuState state = new CpuState();
+        EmulatorState state = new EmulatorState();
         Register8.A.set(state, value);
         state.registerState.flags.setC(carry);
 
@@ -111,7 +111,7 @@ public class BitwiseInstructionTests {
 
     // Expects all registers to have value 0. Leaves all registers with value
     // 0xFF
-    private void testSetAndBitInstructions(CpuState state) {
+    private void testSetAndBitInstructions(EmulatorState state) {
         byte expectedValue = 0;
 
         for (int bitIndex = 0; bitIndex < 8; bitIndex++) {
@@ -131,7 +131,7 @@ public class BitwiseInstructionTests {
 
     // Expects all registers to have value 0xFF. Leaves all registers with
     // value 0.
-    private void testResetAndBitInstructions(CpuState state) {
+    private void testResetAndBitInstructions(EmulatorState state) {
         byte expectedValue = (byte)0xFF;
 
         for (int bitIndex = 0; bitIndex < 8; bitIndex++) {
@@ -151,7 +151,7 @@ public class BitwiseInstructionTests {
 
     @Test
     public void testSetResetInstructions() {
-        CpuState state = new CpuState();
+        EmulatorState state = new EmulatorState();
         testSetAndBitInstructions(state);
         testResetAndBitInstructions(state);
     }

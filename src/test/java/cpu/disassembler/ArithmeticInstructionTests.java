@@ -1,6 +1,6 @@
 package cpu.disassembler;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 import cpu.disassembler.instruction_args.Register16;
 import cpu.disassembler.instruction_args.Register8;
 import cpu.disassembler.instructions.ArithmeticInstructions;
@@ -14,7 +14,7 @@ import org.junit.Test;
  *      CP, DAA
  */
 public class ArithmeticInstructionTests {
-    private void testFlags(CpuState state, int Z, int N, int H, int C) {
+    private void testFlags(EmulatorState state, int Z, int N, int H, int C) {
         Assert.assertEquals(C, state.registerState.flags.getC());
         Assert.assertEquals(H, state.registerState.flags.getH());
         Assert.assertEquals(N, state.registerState.flags.getN());
@@ -36,7 +36,7 @@ public class ArithmeticInstructionTests {
             int expectedCarry,
             int expectedHalfCarry,
             int expectedSubtract) {
-        CpuState state = new CpuState();
+        EmulatorState state = new EmulatorState();
 
         Register8.A.set(state, aValue);
         Register8.B.set(state, bValue);
@@ -59,7 +59,7 @@ public class ArithmeticInstructionTests {
             int expectedCarry,
             int expectedHalfCarry,
             int expectedSubtract) {
-        CpuState state = new CpuState();
+        EmulatorState state = new EmulatorState();
 
         Register16.HL.set(state, hlValue);
         Register16.BC.set(state, bcValue);

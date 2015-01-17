@@ -44,7 +44,7 @@ public class FlagsTests {
         final short expectedAfterH = expectedAfterN | (1 << 5);
         final short expectedAfterC = expectedAfterH | (1 << 4);
 
-        CpuState state = new CpuState();
+        EmulatorState state = new EmulatorState();
         Flags flags = state.registerState.flags;
         Assert.assertEquals(0, (short) Register16.AF.get(state));
 

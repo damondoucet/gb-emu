@@ -1,10 +1,10 @@
 package cpu.disassembler;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 
 /**
  * Represents a single instruction.
  */
 public interface Instruction {
-    void execute(CpuState state);
+    void execute(EmulatorState state);
 }

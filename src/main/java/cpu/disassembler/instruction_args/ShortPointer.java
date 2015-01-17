@@ -1,7 +1,6 @@
 package cpu.disassembler.instruction_args;
 
-import cpu.CpuState;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import cpu.EmulatorState;
 import util.Util;
 
 /**
@@ -16,12 +15,12 @@ public class ShortPointer implements SettableValueContainer<Short> {
     }
 
     @Override
-    public Short get(CpuState state) {
+    public Short get(EmulatorState state) {
         return state.memory.readShort(_address);
     }
 
     @Override
-    public void set(CpuState state, Short value) {
+    public void set(EmulatorState state, Short value) {
         state.memory.writeShort(_address, value);
     }
 

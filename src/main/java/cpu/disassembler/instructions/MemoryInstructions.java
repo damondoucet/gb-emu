@@ -1,6 +1,6 @@
 package cpu.disassembler.instructions;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 import cpu.disassembler.Instruction;
 import cpu.disassembler.instruction_args.Register16;
 import cpu.disassembler.instruction_args.SettableValueContainer;
@@ -16,12 +16,12 @@ import java.util.Objects;
 public final class MemoryInstructions {
     private MemoryInstructions() {}
 
-    private static void updateSp(CpuState state, int delta) {
+    private static void updateSp(EmulatorState state, int delta) {
         short newValue = (short)(Register16.SP.get(state) + delta);
         Register16.SP.set(state, newValue);
     }
 
-    public static void push(CpuState state, short value) {
+    public static void push(EmulatorState state, short value) {
         updateSp(state, -2);
 
         // When pushing, the most significant byte goes first on the stack.
@@ -29,7 +29,7 @@ public final class MemoryInstructions {
         state.memory.writeShort(sp, Util.swapBytes(value));
     }
 
-    public static short pop(CpuState state) {
+    public static short pop(EmulatorState state) {
         short sp = Register16.SP.get(state);
         short returnValue = Util.swapBytes(state.memory.readShort(sp));
 
@@ -63,7 +63,7 @@ public final class MemoryInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             push(state, _container.get(state));
         }
     }
@@ -94,7 +94,7 @@ public final class MemoryInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             _container.set(state, pop(state));
         }
     }

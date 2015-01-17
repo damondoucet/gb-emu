@@ -1,6 +1,6 @@
 package cpu.disassembler.instructions;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 import cpu.disassembler.Instruction;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -27,7 +27,7 @@ public class CpuControlInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             state.interruptsEnabled = true;
         }
     }
@@ -49,7 +49,7 @@ public class CpuControlInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             state.interruptsEnabled = false;
         }
     }
@@ -71,7 +71,7 @@ public class CpuControlInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             state.halt();
         }
     }
@@ -93,7 +93,7 @@ public class CpuControlInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             // We'll cross this bridge if any ROMs actually need this instr...
             throw new NotImplementedException();
         }

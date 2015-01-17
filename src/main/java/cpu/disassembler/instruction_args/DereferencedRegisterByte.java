@@ -1,7 +1,6 @@
 package cpu.disassembler.instruction_args;
 
-import cpu.CpuState;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import cpu.EmulatorState;
 
 /**
  * Used when an instruction dereferences a 16-bit register as a byte.
@@ -14,13 +13,13 @@ public class DereferencedRegisterByte implements SettableValueContainer<Byte> {
     }
 
     @Override
-    public Byte get(CpuState state) {
+    public Byte get(EmulatorState state) {
         short address = _r16.get(state);
         return state.memory.readByte(address);
     }
 
     @Override
-    public void set(CpuState state, Byte value) {
+    public void set(EmulatorState state, Byte value) {
         short address = _r16.get(state);
         state.memory.writeByte(address, value);
     }

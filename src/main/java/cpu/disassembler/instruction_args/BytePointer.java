@@ -1,7 +1,6 @@
 package cpu.disassembler.instruction_args;
 
-import cpu.CpuState;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import cpu.EmulatorState;
 import util.Util;
 
 /**
@@ -16,12 +15,12 @@ public class BytePointer implements SettableValueContainer<Byte> {
     }
 
     @Override
-    public Byte get(CpuState state) {
+    public Byte get(EmulatorState state) {
         return state.memory.readByte(_address);
     }
 
     @Override
-    public void set(CpuState state, Byte value) {
+    public void set(EmulatorState state, Byte value) {
         state.memory.writeByte(_address, value);
     }
 

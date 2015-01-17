@@ -1,6 +1,6 @@
 package cpu.disassembler.instruction_args;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 
 /**
  * Represents an 8-bit register, as used by instructions (e.g., which register
@@ -26,12 +26,12 @@ public class Register8 implements SettableValueContainer<Byte> {
     }
 
     @Override
-    public Byte get(CpuState state) {
+    public Byte get(EmulatorState state) {
         return state.registerState.getR8(_index);
     }
 
     @Override
-    public void set(CpuState state, Byte value) {
+    public void set(EmulatorState state, Byte value) {
         state.registerState.setR8(_index, value);
     }
 

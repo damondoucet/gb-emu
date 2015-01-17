@@ -1,6 +1,6 @@
 package cpu.disassembler.instructions;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 import cpu.disassembler.Instruction;
 import cpu.disassembler.instruction_args.Register16;
 import cpu.disassembler.instruction_args.Register8;
@@ -31,7 +31,7 @@ public final class ArithmeticInstructions {
     // We pull these methods out so that ADD, ADC, and INC can share the same
     // code (same for SUB, SBC, and DEC).
     private static void add8(
-            CpuState state,
+            EmulatorState state,
             SettableValueContainer<Byte> dest,
             byte val,
             boolean useCarry) {
@@ -59,7 +59,7 @@ public final class ArithmeticInstructions {
     // Add a given value to the value in the destination and store the result
     // in the destination, in addition to setting any necessary flags.
     private static void add16(
-            CpuState state,
+            EmulatorState state,
             SettableValueContainer<Short> dest,
             short val) {
         short a = dest.get(state);
@@ -77,7 +77,7 @@ public final class ArithmeticInstructions {
 
     // Same as above except for subtraction.
     private static void sub8(
-            CpuState state,
+            EmulatorState state,
             SettableValueContainer<Byte> dest,
             byte val,
             boolean useCarry) {
@@ -99,7 +99,7 @@ public final class ArithmeticInstructions {
     }
 
     private static void sub16(
-            CpuState state,
+            EmulatorState state,
             SettableValueContainer<Short> dest,
             short val) {
         short a = dest.get(state);
@@ -146,7 +146,7 @@ public final class ArithmeticInstructions {
 
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             add8(state, Register8.A, _container.get(state), false);
         }
     }
@@ -177,7 +177,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             add16(state, Register16.HL, _container.get(state));
         }
     }
@@ -208,7 +208,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             add8(state, Register8.A, _container.get(state), true);
         }
     }
@@ -239,7 +239,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             add8(state, _container, (byte)1, false);
         }
     }
@@ -270,7 +270,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             add16(state, _container, (short)1);
         }
     }
@@ -301,7 +301,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             sub8(state, Register8.A, _container.get(state), false);
         }
     }
@@ -332,7 +332,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             sub16(state, Register16.HL, _container.get(state));
         }
     }
@@ -363,7 +363,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             sub8(state, Register8.A, _container.get(state), true);
         }
     }
@@ -394,7 +394,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             sub8(state, Register8.A, _container.get(state), false);
         }
     }
@@ -425,7 +425,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             sub16(state, _container, (short)1);
         }
     }
@@ -447,7 +447,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             state.registerState.flags.setC(1);
             state.registerState.flags.setN(0);
             state.registerState.flags.setH(0);
@@ -471,7 +471,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             int newCarry = ~state.registerState.flags.getC() & 1;
             state.registerState.flags.setC(newCarry);
             state.registerState.flags.setN(0);
@@ -515,16 +515,16 @@ public final class ArithmeticInstructions {
             }
 
             @Override
-            public Byte get(CpuState state) {
+            public Byte get(EmulatorState state) {
                 return _value;
             }
 
             @Override
-            public void set(CpuState state, Byte value) { }
+            public void set(EmulatorState state, Byte value) { }
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             sub8(
                     state,
                     new NoopSettableValueContainer(Register8.A.get(state)),
@@ -550,7 +550,7 @@ public final class ArithmeticInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             throw new NotImplementedException();
         }
     }

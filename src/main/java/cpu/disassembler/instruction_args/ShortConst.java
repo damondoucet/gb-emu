@@ -1,6 +1,6 @@
 package cpu.disassembler.instruction_args;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 import util.Util;
 
 /**
@@ -14,7 +14,7 @@ public class ShortConst implements ValueContainer<Short> {
     }
 
     @Override
-    public Short get(CpuState state) {
+    public Short get(EmulatorState state) {
         return _value;
     }
 

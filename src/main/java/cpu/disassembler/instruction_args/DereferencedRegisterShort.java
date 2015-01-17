@@ -1,7 +1,6 @@
 package cpu.disassembler.instruction_args;
 
-import cpu.CpuState;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import cpu.EmulatorState;
 
 /**
  * Used when an instruction dereferences a 16-bit register as a short.
@@ -14,13 +13,13 @@ public class DereferencedRegisterShort implements SettableValueContainer<Short> 
     }
 
     @Override
-    public Short get(CpuState state) {
+    public Short get(EmulatorState state) {
         short address = _r16.get(state);
         return state.memory.readShort(address);
     }
 
     @Override
-    public void set(CpuState state, Short value) {
+    public void set(EmulatorState state, Short value) {
         short address = _r16.get(state);
         state.memory.writeShort(address, value);
     }

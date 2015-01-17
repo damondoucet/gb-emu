@@ -1,6 +1,6 @@
 package cpu.disassembler.instructions;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 import cpu.disassembler.Instruction;
 import cpu.disassembler.instruction_args.Register8;
 import cpu.disassembler.instruction_args.SettableValueContainer;
@@ -26,7 +26,7 @@ public final class BitwiseInstructions {
     // instruction that acts on the A register in less cycles, so we
     // create a separate instruction but de-duplicate the execution
     // here.
-    private static void executeRlc(CpuState state, SettableValueContainer<Byte> container) {
+    private static void executeRlc(EmulatorState state, SettableValueContainer<Byte> container) {
         byte oldValue = container.get(state);
         int newCarry = (oldValue & 0xFF) >>> 7;
         byte newValue = (byte)((oldValue << 1) | newCarry);
@@ -38,7 +38,7 @@ public final class BitwiseInstructions {
         state.registerState.flags.setH(0);
     }
 
-    private static void executeRrc(CpuState state, SettableValueContainer<Byte> container) {
+    private static void executeRrc(EmulatorState state, SettableValueContainer<Byte> container) {
         byte oldValue = container.get(state);
         int newCarry = oldValue & 1;
         byte newValue = (byte)(((oldValue & 0xFF) >>> 1) | (newCarry << 7));
@@ -50,7 +50,7 @@ public final class BitwiseInstructions {
         state.registerState.flags.setH(0);
     }
 
-    private static void executeRl(CpuState state, SettableValueContainer<Byte> container) {
+    private static void executeRl(EmulatorState state, SettableValueContainer<Byte> container) {
         int oldCarry = state.registerState.flags.getC();
         byte oldValue = container.get(state);
         byte newValue = (byte)((oldValue << 1) | oldCarry);
@@ -63,7 +63,7 @@ public final class BitwiseInstructions {
         state.registerState.flags.setH(0);
     }
 
-    private static void executeRr(CpuState state, SettableValueContainer<Byte> container) {
+    private static void executeRr(EmulatorState state, SettableValueContainer<Byte> container) {
         int shiftedCarry = state.registerState.flags.getC() << 7;
         byte oldValue = container.get(state);
         byte newValue = (byte)(((oldValue & 0xFF) >>> 1) | shiftedCarry);
@@ -93,7 +93,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             executeRl(state, Register8.A);
         }
     }
@@ -115,7 +115,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             executeRr(state, Register8.A);
         }
     }
@@ -137,7 +137,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             executeRrc(state, Register8.A);
         }
     }
@@ -159,7 +159,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             executeRlc(state, Register8.A);
         }
     }
@@ -192,7 +192,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             executeRlc(state, _container);
         }
     }
@@ -225,7 +225,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             executeRrc(state, _container);
         }
     }
@@ -257,7 +257,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             executeRl(state, _container);
         }
     }
@@ -289,7 +289,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             executeRr(state, _container);
         }
     }
@@ -322,7 +322,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             byte oldValue = _container.get(state);
             byte newValue = (byte)(oldValue << 1);
             int carry = (byte)((oldValue & 0xFF) >>> 7);
@@ -363,7 +363,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             byte oldValue = _container.get(state);
             byte newValue = (byte)(oldValue >> 1);
             int carry = oldValue & 1;
@@ -404,7 +404,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             byte oldValue = _container.get(state);
             byte newValue = (byte)((oldValue & 0xFF) >>> 1);
             int carry = oldValue & 1;
@@ -444,7 +444,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             byte value = _container.get(state);
             byte lowNibble = (byte)(value & 0xF);
             byte highNibble = (byte)(value >> 4);
@@ -488,7 +488,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             int bit = Util.getBit(_container.get(state), _bitIndex);
             int isZero = ~bit & 1;
 
@@ -530,7 +530,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             byte newValue = Util.setBit(_container.get(state), _bitIndex, 0);
             _container.set(state, newValue);
         }
@@ -566,7 +566,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             byte newValue = Util.setBit(_container.get(state), _bitIndex, 1);
             _container.set(state, newValue);
         }
@@ -598,7 +598,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             byte newValue = (byte)(Register8.A.get(state) & _container.get(state));
             Register8.A.set(state, newValue);
 
@@ -635,7 +635,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             byte newValue = (byte)(Register8.A.get(state) | _container.get(state));
             Register8.A.set(state, newValue);
 
@@ -672,7 +672,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             byte newValue = (byte)(Register8.A.get(state) ^ _container.get(state));
             Register8.A.set(state, newValue);
 
@@ -700,7 +700,7 @@ public final class BitwiseInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             byte newValue = (byte)(Register8.A.get(state) ^ 0xFF);
             Register8.A.set(state, newValue);
 

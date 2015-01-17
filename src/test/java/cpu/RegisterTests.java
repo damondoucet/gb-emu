@@ -22,7 +22,7 @@ public class RegisterTests {
     };
 
     // Initially, all registers should be 0
-    private void assertAllRegs0(CpuState state) {
+    private void assertAllRegs0(EmulatorState state) {
         for (Register8 r8 : _r8s)
             Assert.assertEquals(0, (byte)r8.get(state));
 
@@ -30,7 +30,7 @@ public class RegisterTests {
             Assert.assertEquals(0, (short)r16.get(state));
     }
 
-    private void testRegister8(CpuState state, Register8 reg) {
+    private void testRegister8(EmulatorState state, Register8 reg) {
         final byte value = (byte)0x77;
 
         reg.set(state, value);
@@ -39,7 +39,7 @@ public class RegisterTests {
 
     @Test
     public void test8Bit() {
-        CpuState state = new CpuState();
+        EmulatorState state = new EmulatorState();
         assertAllRegs0(state);
 
         // Test getting and setting each 8-bit register
@@ -47,7 +47,7 @@ public class RegisterTests {
             testRegister8(state, r8);
     }
 
-    private void testRegister16(CpuState state, Register16 reg) {
+    private void testRegister16(EmulatorState state, Register16 reg) {
         final short value = (short)0x1337;
 
         reg.set(state, value);
@@ -56,7 +56,7 @@ public class RegisterTests {
 
     @Test
     public void test16Bit() {
-        CpuState state = new CpuState();
+        EmulatorState state = new EmulatorState();
         assertAllRegs0(state);
 
         // Test getting and setting each 16-bit register
@@ -64,7 +64,7 @@ public class RegisterTests {
             testRegister16(state, r16);
     }
 
-    private void testSetting16Modifies8(CpuState state,
+    private void testSetting16Modifies8(EmulatorState state,
                                         Register16 reg,
                                         Register8 high,
                                         Register8 low) {
@@ -83,7 +83,7 @@ public class RegisterTests {
             Assert.assertEquals(expectedLowByte, (byte)low.get(state));
     }
 
-    private void testSetting8Modifies16(CpuState state,
+    private void testSetting8Modifies16(EmulatorState state,
                                         Register16 reg,
                                         Register8 high,
                                         Register8 low) {
@@ -107,7 +107,7 @@ public class RegisterTests {
 
     // hi and lo here can be null (in the case that that register isn't public).
     // It doesn't make sense to call this if both are null, however.
-    private void testConstituentRegs(CpuState state,
+    private void testConstituentRegs(EmulatorState state,
                                      Register16 reg,
                                      Register8 hi,
                                      Register8 lo) {
@@ -117,7 +117,7 @@ public class RegisterTests {
 
     @Test
     public void test8And16BitInterop() {
-        CpuState state = new CpuState();
+        EmulatorState state = new EmulatorState();
         assertAllRegs0(state);
 
         // Test that setting a 16-bit register modifies its constituents, and

@@ -1,6 +1,6 @@
 package cpu.disassembler.instructions;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 import cpu.disassembler.Instruction;
 import cpu.disassembler.instruction_args.Register16;
 import cpu.disassembler.instruction_args.ValueContainer;
@@ -34,7 +34,7 @@ public final class IPControlInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {}
+        public void execute(EmulatorState state) {}
     }
 
     enum JumpFlag {
@@ -43,7 +43,7 @@ public final class IPControlInstructions {
         None
     }
 
-    private static boolean shouldJump(CpuState state, JumpFlag flag, boolean negated) {
+    private static boolean shouldJump(EmulatorState state, JumpFlag flag, boolean negated) {
         if (flag == JumpFlag.Z)
             return (state.registerState.flags.getZ() == 1) != negated;
         else if (flag == JumpFlag.C)
@@ -71,12 +71,12 @@ public final class IPControlInstructions {
                 address);
     }
 
-    private static void call(CpuState state, short address) {
+    private static void call(EmulatorState state, short address) {
         MemoryInstructions.push(state, address);
         Register16.PC.set(state, address);
     }
 
-    private static void ret(CpuState state) {
+    private static void ret(EmulatorState state) {
         short returnAddr = MemoryInstructions.pop(state);
         Register16.PC.set(state, returnAddr);
     }
@@ -113,7 +113,7 @@ public final class IPControlInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             if (shouldJump(state, _flag, _negated))
                 Register16.PC.set(state, _address.get(state));
         }
@@ -151,7 +151,7 @@ public final class IPControlInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             if (shouldJump(state, _flag, _negated)) {
                 short newAddr = (short)(Register16.PC.get(state) + _offset.get(state));
                 Register16.PC.set(state, newAddr);
@@ -191,7 +191,7 @@ public final class IPControlInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             if (shouldJump(state, _flag, _negated))
                 call(state, _address.get(state));
         }
@@ -223,7 +223,7 @@ public final class IPControlInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             call(state, _addr);
         }
     }
@@ -257,7 +257,7 @@ public final class IPControlInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             if (shouldJump(state, _flag, _negated))
                 ret(state);
         }
@@ -280,7 +280,7 @@ public final class IPControlInstructions {
         }
 
         @Override
-        public void execute(CpuState state) {
+        public void execute(EmulatorState state) {
             state.interruptsEnabled = true;
             ret(state);
         }

@@ -5,19 +5,18 @@ import memory.MemoryBankController;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
- * TODO(ddoucet): is CpuState the best name for this? It should include
- * an MBC as well as a reference to the memory and all of the register state
+ * All state information for the currently running ROM/emulation.
  */
-public class CpuState {
+public class EmulatorState {
     public boolean interruptsEnabled;
     public final RegisterState registerState;
     public final Memory memory;
 
-    public CpuState() {
+    public EmulatorState() {
         this(null);
     }
 
-    public CpuState(MemoryBankController mbc) {
+    public EmulatorState(MemoryBankController mbc) {
         interruptsEnabled = true;
         registerState = new RegisterState();
         memory = new Memory(mbc);

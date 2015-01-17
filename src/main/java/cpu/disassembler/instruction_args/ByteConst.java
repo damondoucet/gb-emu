@@ -1,6 +1,6 @@
 package cpu.disassembler.instruction_args;
 
-import cpu.CpuState;
+import cpu.EmulatorState;
 import util.Util;
 
 /**
@@ -14,7 +14,7 @@ public class ByteConst implements ValueContainer<Byte> {
     }
 
     @Override
-    public Byte get(CpuState state) {
+    public Byte get(EmulatorState state) {
         return _value;
     }
 
