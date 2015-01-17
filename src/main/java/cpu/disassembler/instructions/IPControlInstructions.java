@@ -17,7 +17,7 @@ import java.util.Objects;
 public final class IPControlInstructions {
     private IPControlInstructions() {}
 
-    public static class NopInstruction implements Instruction {
+    public static class NopInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass().equals(rhs.getClass());
@@ -81,7 +81,7 @@ public final class IPControlInstructions {
         Register16.PC.set(state, returnAddr);
     }
 
-    public static class JpInstruction implements Instruction {
+    public static class JpInstruction extends Instruction {
         private final JumpFlag _flag;
         private final boolean _negated;
         private final ValueContainer<Short> _address;
@@ -113,13 +113,21 @@ public final class IPControlInstructions {
         }
 
         @Override
+        public int getAdditionalCycles(EmulatorState state) {
+            if (_flag == JumpFlag.None)
+                return 0;
+
+            return shouldJump(state, _flag, _negated) ? 4 : 0;
+        }
+
+        @Override
         public void execute(EmulatorState state) {
             if (shouldJump(state, _flag, _negated))
                 Register16.PC.set(state, _address.get(state));
         }
     }
 
-    public static class JrInstruction implements Instruction {
+    public static class JrInstruction extends Instruction {
         private final JumpFlag _flag;
         private final boolean _negated;
         private final ValueContainer<Short> _offset;
@@ -151,6 +159,13 @@ public final class IPControlInstructions {
         }
 
         @Override
+        public int getAdditionalCycles(EmulatorState state) {
+            if (_flag == JumpFlag.None)
+                return 0;
+
+            return shouldJump(state, _flag, _negated) ? 4 : 0;
+        }
+        @Override
         public void execute(EmulatorState state) {
             if (shouldJump(state, _flag, _negated)) {
                 short newAddr = (short)(Register16.PC.get(state) + _offset.get(state));
@@ -159,7 +174,7 @@ public final class IPControlInstructions {
         }
     }
 
-    public static class CallInstruction implements Instruction {
+    public static class CallInstruction extends Instruction {
         private final JumpFlag _flag;
         private final boolean _negated;
         private final ValueContainer<Short> _address;
@@ -191,13 +206,20 @@ public final class IPControlInstructions {
         }
 
         @Override
+        public int getAdditionalCycles(EmulatorState state) {
+            if (_flag == JumpFlag.None)
+                return 0;
+
+            return shouldJump(state, _flag, _negated) ? 12 : 0;
+        }
+        @Override
         public void execute(EmulatorState state) {
             if (shouldJump(state, _flag, _negated))
                 call(state, _address.get(state));
         }
     }
 
-    public static class RstInstruction implements Instruction {
+    public static class RstInstruction extends Instruction {
         private final byte _addr;
 
         public RstInstruction(byte addr) {
@@ -228,7 +250,7 @@ public final class IPControlInstructions {
         }
     }
 
-    public static class RetInstruction implements Instruction {
+    public static class RetInstruction extends Instruction {
         private final JumpFlag _flag;
         private final boolean _negated;
 
@@ -257,13 +279,20 @@ public final class IPControlInstructions {
         }
 
         @Override
+        public int getAdditionalCycles(EmulatorState state) {
+            if (_flag == JumpFlag.None)
+                return 0;
+
+            return shouldJump(state, _flag, _negated) ? 12 : 0;
+        }
+        @Override
         public void execute(EmulatorState state) {
             if (shouldJump(state, _flag, _negated))
                 ret(state);
         }
     }
 
-    public static class RetiInstruction implements Instruction {
+    public static class RetiInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();

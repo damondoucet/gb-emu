@@ -53,7 +53,7 @@ public final class MemoryInstructions {
 
     }
 
-    public static class PushInstruction implements Instruction {
+    public static class PushInstruction extends Instruction {
         private final ValueContainer<Short> _container;
 
         public PushInstruction(ValueContainer<Short> container) {
@@ -84,7 +84,7 @@ public final class MemoryInstructions {
         }
     }
 
-    public static class PopInstruction implements Instruction {
+    public static class PopInstruction extends Instruction {
         private final SettableValueContainer<Short> _container;
 
         public PopInstruction(SettableValueContainer<Short> container) {
@@ -115,7 +115,7 @@ public final class MemoryInstructions {
         }
     }
 
-    public static class Ld8Instruction implements Instruction {
+    public static class Ld8Instruction extends Instruction {
         private final SettableValueContainer<Byte> _dest;
         private final ValueContainer<Byte> _src;
 
@@ -149,7 +149,7 @@ public final class MemoryInstructions {
         }
     }
 
-    public static class Ld16Instruction implements Instruction {
+    public static class Ld16Instruction extends Instruction {
         private final SettableValueContainer<Short> _dest;
         private final ValueContainer<Short> _src;
 
@@ -186,7 +186,7 @@ public final class MemoryInstructions {
     // Load A to/from HL and increment HL.
     // _writeToHL = true -> LDI (HL), A
     // _writeToHL = false -> LDI A, (HL)
-    public static class LdiInstruction implements Instruction {
+    public static class LdiInstruction extends Instruction {
         private final boolean _writeToHL;
 
         private LdiInstruction(boolean writeToHL) {
@@ -229,7 +229,7 @@ public final class MemoryInstructions {
     // Load A to/from HL and decrement HL.
     // _writeToHL = true -> LDI (HL), A
     // _writeToHL = false -> LDI A, (HL)
-    public static class LddInstruction implements Instruction {
+    public static class LddInstruction extends Instruction {
         private final boolean _writeToHL;
 
         private LddInstruction(boolean writeToHL) {
@@ -270,7 +270,7 @@ public final class MemoryInstructions {
     }
 
     // Represents the LD A, ($FF00+C) and LD ($FF00+C), A instructions.
-    public static class LdIoPortInstruction implements Instruction {
+    public static class LdIoPortInstruction extends Instruction {
         private final boolean _writeToPort;
 
         private LdIoPortInstruction(boolean writeToPort) {
@@ -315,7 +315,7 @@ public final class MemoryInstructions {
         }
     }
 
-    public static class LdHLToSpInstruction implements Instruction {
+    public static class LdHLToSpInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();
@@ -337,7 +337,7 @@ public final class MemoryInstructions {
         }
     }
 
-    public static class LdSpToHlInstruction implements Instruction {
+    public static class LdSpToHlInstruction extends Instruction {
         private final byte _offset;
 
         public LdSpToHlInstruction(byte offset) {

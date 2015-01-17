@@ -10,7 +10,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  *      EI, DI
  */
 public class CpuControlInstructions {
-    public static class EiInstruction implements Instruction {
+    public static class EiInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();
@@ -32,7 +32,7 @@ public class CpuControlInstructions {
         }
     }
 
-    public static class DiInstruction implements Instruction {
+    public static class DiInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();
@@ -54,7 +54,7 @@ public class CpuControlInstructions {
         }
     }
 
-    public static class HaltInstruction implements Instruction {
+    public static class HaltInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();
@@ -76,7 +76,7 @@ public class CpuControlInstructions {
         }
     }
 
-    public static class StopInstruction implements Instruction {
+    public static class StopInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();

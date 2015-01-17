@@ -76,7 +76,7 @@ public final class BitwiseInstructions {
         state.registerState.flags.setH(0);
     }
 
-    public static class RlaInstruction implements Instruction {
+    public static class RlaInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();
@@ -98,7 +98,7 @@ public final class BitwiseInstructions {
         }
     }
 
-    public static class RraInstruction implements Instruction {
+    public static class RraInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();
@@ -120,7 +120,7 @@ public final class BitwiseInstructions {
         }
     }
 
-    public static class RrcaInstruction implements Instruction {
+    public static class RrcaInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();
@@ -142,7 +142,7 @@ public final class BitwiseInstructions {
         }
     }
 
-    public static class RlcaInstruction implements Instruction {
+    public static class RlcaInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();
@@ -166,7 +166,7 @@ public final class BitwiseInstructions {
 
     // Performs a rotate-left on an 8-bit value container and sets the carry
     // flag to be the original 7th bit.
-    public static class RlcInstruction implements Instruction {
+    public static class RlcInstruction extends Instruction {
         private final SettableValueContainer<Byte> _container;
 
         public RlcInstruction(SettableValueContainer<Byte> container) {
@@ -199,7 +199,7 @@ public final class BitwiseInstructions {
 
     // Performs a rotate-right on an 8-bit value container and sets the carry
     // flag to be the original 0th bit.
-    public static class RrcInstruction implements Instruction {
+    public static class RrcInstruction extends Instruction {
         private final SettableValueContainer<Byte> _container;
 
         public RrcInstruction(SettableValueContainer<Byte> container) {
@@ -231,7 +231,7 @@ public final class BitwiseInstructions {
     }
 
     // Performs a rotate-left through carry on an 8-bit value container.
-    public static class RlInstruction implements Instruction {
+    public static class RlInstruction extends Instruction {
         private final SettableValueContainer<Byte> _container;
 
         public RlInstruction(SettableValueContainer<Byte> container) {
@@ -263,7 +263,7 @@ public final class BitwiseInstructions {
     }
 
     // Performs a rotate-right through carry on an 8-bit value container.
-    public static class RrInstruction implements Instruction {
+    public static class RrInstruction extends Instruction {
         private final SettableValueContainer<Byte> _container;
 
         public RrInstruction(SettableValueContainer<Byte> container) {
@@ -296,7 +296,7 @@ public final class BitwiseInstructions {
 
     // Performs an arithmetic shift left by one on an 8-bit value container and
     // stores the lost bit in the carry flag.
-    public static class SlaInstruction implements Instruction {
+    public static class SlaInstruction extends Instruction {
         private final SettableValueContainer<Byte> _container;
 
         public SlaInstruction(SettableValueContainer<Byte> container) {
@@ -337,7 +337,7 @@ public final class BitwiseInstructions {
 
     // Performs an arithmetic shift right by one on an 8-bit value container
     // and stores the lost bit in the carry flag.
-    public static class SraInstruction implements Instruction {
+    public static class SraInstruction extends Instruction {
         private final SettableValueContainer<Byte> _container;
 
         public SraInstruction(SettableValueContainer<Byte> container) {
@@ -378,7 +378,7 @@ public final class BitwiseInstructions {
 
     // Performs a logical shift right by one on an 8-bit value container and
     // stores the lost bit in the carry flag.
-    public static class SrlInstruction implements Instruction {
+    public static class SrlInstruction extends Instruction {
         private final SettableValueContainer<Byte> _container;
 
         public SrlInstruction(SettableValueContainer<Byte> container) {
@@ -418,7 +418,7 @@ public final class BitwiseInstructions {
     }
 
     // Swaps the low and high nibbles of an 8-bit value container.
-    public static class SwapInstruction implements Instruction {
+    public static class SwapInstruction extends Instruction {
         private final SettableValueContainer<Byte> _container;
 
         public SwapInstruction(SettableValueContainer<Byte> container) {
@@ -457,7 +457,7 @@ public final class BitwiseInstructions {
 
     // Tests a bit in a given 8-bit value container. Stores the result in the Z
     // flag.
-    public static class BitInstruction implements Instruction {
+    public static class BitInstruction extends Instruction {
         private final int _bitIndex;
         private final SettableValueContainer<Byte> _container;
 
@@ -499,7 +499,7 @@ public final class BitwiseInstructions {
     }
 
     // Resets a bit in a given 8-bit value container.
-    public static class ResInstruction implements Instruction {
+    public static class ResInstruction extends Instruction {
         private final int _bitIndex;
         private final SettableValueContainer<Byte> _container;
 
@@ -537,7 +537,7 @@ public final class BitwiseInstructions {
     }
 
     // Sets a bit in a given 8-bit value container.
-    public static class SetInstruction implements Instruction {
+    public static class SetInstruction extends Instruction {
         private final int _bitIndex;
         private final SettableValueContainer<Byte> _container;
 
@@ -572,7 +572,7 @@ public final class BitwiseInstructions {
         }
     }
 
-    public static class AndInstruction implements Instruction {
+    public static class AndInstruction extends Instruction {
         private final ValueContainer<Byte> _container;
 
         public AndInstruction(ValueContainer<Byte> container) {
@@ -609,7 +609,7 @@ public final class BitwiseInstructions {
         }
     }
 
-    public static class OrInstruction implements Instruction {
+        public static class OrInstruction extends Instruction {
         private final ValueContainer<Byte> _container;
 
         public OrInstruction(ValueContainer<Byte> container) {
@@ -646,7 +646,7 @@ public final class BitwiseInstructions {
         }
     }
 
-    public static class XorInstruction implements Instruction {
+    public static class XorInstruction extends Instruction {
         private final ValueContainer<Byte> _container;
 
         public XorInstruction(ValueContainer<Byte> container) {
@@ -683,7 +683,7 @@ public final class BitwiseInstructions {
         }
     }
 
-    public static class CplInstruction implements Instruction {
+    public static class CplInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();

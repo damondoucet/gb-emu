@@ -110,7 +110,7 @@ public final class ArithmeticInstructions {
         state.registerState.flags.setH(aHalf < vHalf ? 1 : 0);
     }
 
-    public static class Add8Instruction implements Instruction {
+    public static class Add8Instruction extends Instruction {
         private final ValueContainer<Byte> _container;
 
         public Add8Instruction(ValueContainer<Byte> container) {
@@ -142,7 +142,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class Add16Instruction implements Instruction {
+    public static class Add16Instruction extends Instruction {
         private final SettableValueContainer<Short> _container;
 
         public Add16Instruction(SettableValueContainer<Short> container) {
@@ -173,7 +173,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class AdcInstruction implements Instruction {
+    public static class AdcInstruction extends Instruction {
         private final ValueContainer<Byte> _container;
 
         public AdcInstruction(ValueContainer<Byte> container) {
@@ -204,7 +204,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class Inc8Instruction implements Instruction {
+    public static class Inc8Instruction extends Instruction {
         private final SettableValueContainer<Byte> _container;
 
         public Inc8Instruction(SettableValueContainer<Byte> container) {
@@ -235,7 +235,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class Inc16Instruction implements Instruction {
+    public static class Inc16Instruction extends Instruction {
         private final SettableValueContainer<Short> _container;
 
         public Inc16Instruction(SettableValueContainer<Short> container) {
@@ -266,7 +266,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class Sub8Instruction implements Instruction {
+    public static class Sub8Instruction extends Instruction {
         private final ValueContainer<Byte> _container;
 
         public Sub8Instruction(ValueContainer<Byte> container) {
@@ -297,7 +297,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class Sub16Instruction implements Instruction {
+    public static class Sub16Instruction extends Instruction {
         private final SettableValueContainer<Short> _container;
 
         public Sub16Instruction(SettableValueContainer<Short> container) {
@@ -328,7 +328,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class SbcInstruction implements Instruction {
+    public static class SbcInstruction extends Instruction {
         private final ValueContainer<Byte> _container;
 
         public SbcInstruction(ValueContainer<Byte> container) {
@@ -359,7 +359,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class Dec8Instruction implements Instruction {
+    public static class Dec8Instruction extends Instruction {
         private final ValueContainer<Byte> _container;
 
         public Dec8Instruction(ValueContainer<Byte> container) {
@@ -390,7 +390,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class Dec16Instruction implements Instruction {
+    public static class Dec16Instruction extends Instruction {
         private final SettableValueContainer<Short> _container;
 
         public Dec16Instruction(SettableValueContainer<Short> container) {
@@ -421,7 +421,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class ScfInstruction implements Instruction {
+    public static class ScfInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();
@@ -445,7 +445,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class CcfInstruction implements Instruction {
+    public static class CcfInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();
@@ -470,7 +470,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class CpInstruction implements Instruction {
+    public static class CpInstruction extends Instruction {
         private final ValueContainer<Byte> _container;
 
         public CpInstruction(ValueContainer<Byte> container) {
@@ -524,7 +524,7 @@ public final class ArithmeticInstructions {
         }
     }
 
-    public static class DaaInstruction implements Instruction {
+    public static class DaaInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
             return rhs != null && getClass() == rhs.getClass();
