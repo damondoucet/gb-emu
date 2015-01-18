@@ -16,8 +16,6 @@ import java.util.Objects;
  *      SLA, SRA, SRL,
  *      SWAP, BIT, RES, SET,
  *      AND, OR, XOR, CPL
- *
- *  TODO(ddoucet): AND/OR/XOR/CPL
  */
 public final class BitwiseInstructions {
     private BitwiseInstructions() {}
