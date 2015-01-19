@@ -37,7 +37,7 @@ public final class IPControlInstructions {
         public void execute(EmulatorState state) {}
     }
 
-    enum JumpFlag {
+    public enum JumpFlag {
         Z,
         C,
         None
@@ -130,9 +130,9 @@ public final class IPControlInstructions {
     public static class JrInstruction extends Instruction {
         private final JumpFlag _flag;
         private final boolean _negated;
-        private final ValueContainer<Short> _offset;
+        private final byte _offset;
 
-        public JrInstruction(JumpFlag flag, boolean negated, ValueContainer<Short> offset) {
+        public JrInstruction(JumpFlag flag, boolean negated, byte offset) {
             _flag = flag;
             _negated = negated;
             _offset = offset;
@@ -155,7 +155,7 @@ public final class IPControlInstructions {
 
         @Override
         public String toString() {
-            return jumpString("JR", _flag, _negated, _offset.toString());
+            return jumpString("JR", _flag, _negated, Util.byteToHexString(_offset));
         }
 
         @Override
@@ -168,7 +168,7 @@ public final class IPControlInstructions {
         @Override
         public void execute(EmulatorState state) {
             if (shouldJump(state, _flag, _negated)) {
-                short newAddr = (short)(Register16.PC.get(state) + _offset.get(state));
+                short newAddr = (short)(Register16.PC.get(state) + _offset);
                 Register16.PC.set(state, newAddr);
             }
         }

@@ -60,7 +60,11 @@ public final class ArithmeticInstructions {
         short newValue = (short)(a + val);
         dest.set(state, newValue);
 
-        state.registerState.flags.setZ(newValue == 0 ? 1 : 0);
+        // Most 16-bit ADD instructions don't affect the Z flag; the ADD SP, r8
+        // instruction simply clears it.
+        if (dest.equals(Register16.SP))
+            state.registerState.flags.setZ(0);
+
         state.registerState.flags.setN(0);
         state.registerState.flags.setH(Util.add16WouldHalfCarry(a, val) ? 1 : 0);
         state.registerState.flags.setC(Util.add16WouldCarry(a, val) ? 1 : 0);
@@ -132,7 +136,7 @@ public final class ArithmeticInstructions {
 
         @Override
         public String toString() {
-            return String.format("ADD %s", _container.toString());
+            return String.format("ADD A, %s", _container.toString());
         }
 
 
@@ -143,10 +147,12 @@ public final class ArithmeticInstructions {
     }
 
     public static class Add16Instruction extends Instruction {
-        private final SettableValueContainer<Short> _container;
+        private final SettableValueContainer<Short> _dest;
+        private final ValueContainer<Short> _src;
 
-        public Add16Instruction(SettableValueContainer<Short> container) {
-            _container = container;
+        public Add16Instruction(SettableValueContainer<Short> dest, ValueContainer<Short> src) {
+            _dest = dest;
+            _src = src;
         }
 
         @Override
@@ -154,22 +160,23 @@ public final class ArithmeticInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             Add16Instruction other = (Add16Instruction)rhs;
-            return _container == other._container;
+            return _dest == other._dest &&
+                    _src == other._src;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(_container);
+            return Objects.hash(_dest, _src);
         }
 
         @Override
         public String toString() {
-            return String.format("ADD %s", _container.toString());
+            return String.format("ADD %s, %s", _dest.toString(), _src.toString());
         }
 
         @Override
         public void execute(EmulatorState state) {
-            add16(state, Register16.HL, _container.get(state));
+            add16(state, _dest, _src.get(state));
         }
     }
 
@@ -231,7 +238,7 @@ public final class ArithmeticInstructions {
 
         @Override
         public void execute(EmulatorState state) {
-            add8(state, _container, (byte)1, false);
+            add8(state, _container, (byte) 1, false);
         }
     }
 
@@ -262,14 +269,14 @@ public final class ArithmeticInstructions {
 
         @Override
         public void execute(EmulatorState state) {
-            add16(state, _container, (short)1);
+            add16(state, _container, (short) 1);
         }
     }
 
-    public static class Sub8Instruction extends Instruction {
+    public static class SubInstruction extends Instruction {
         private final ValueContainer<Byte> _container;
 
-        public Sub8Instruction(ValueContainer<Byte> container) {
+        public SubInstruction(ValueContainer<Byte> container) {
             _container = container;
         }
 
@@ -277,7 +284,7 @@ public final class ArithmeticInstructions {
         public boolean equals(Object rhs) {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
-            Sub8Instruction other = (Sub8Instruction)rhs;
+            SubInstruction other = (SubInstruction)rhs;
             return _container == other._container;
         }
 
@@ -294,37 +301,6 @@ public final class ArithmeticInstructions {
         @Override
         public void execute(EmulatorState state) {
             sub8(state, Register8.A, _container.get(state), false);
-        }
-    }
-
-    public static class Sub16Instruction extends Instruction {
-        private final SettableValueContainer<Short> _container;
-
-        public Sub16Instruction(SettableValueContainer<Short> container) {
-            _container = container;
-        }
-
-        @Override
-        public boolean equals(Object rhs) {
-            if (rhs == null || getClass() != rhs.getClass())
-                return false;
-            Sub16Instruction other = (Sub16Instruction)rhs;
-            return _container == other._container;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(_container);
-        }
-
-        @Override
-        public String toString() {
-            return String.format("SUB %s", _container.toString());
-        }
-
-        @Override
-        public void execute(EmulatorState state) {
-            sub16(state, Register16.HL, _container.get(state));
         }
     }
 

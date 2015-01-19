@@ -12,7 +12,7 @@
 
 import argparse
 
-NO_ARGS_FORMAT = """public static class %sInstruction implements Instruction {
+NO_ARGS_FORMAT = """public static class %sInstruction extends Instruction {
     @Override
     public boolean equals(Object rhs) {
         return rhs != null && getClass() == rhs.getClass();
@@ -35,7 +35,7 @@ NO_ARGS_FORMAT = """public static class %sInstruction implements Instruction {
 }"""
 
 
-ARGS_FORMAT = """public static class %sInstruction implements Instruction {
+ARGS_FORMAT = """public static class %sInstruction extends Instruction {
     %s
 
     public %sInstruction(%s) {

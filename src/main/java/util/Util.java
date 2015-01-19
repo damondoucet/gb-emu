@@ -46,17 +46,6 @@ public final class Util {
         return (byte)getBit((int) value, index);
     }
 
-    public static short setBit(short orig, int index, int value) {
-        checkArgument(value == 0 || value == 1);
-        checkArgument(index >= 0 && index < 16);
-        return (short)setBit((int) orig, index, value);
-    }
-
-    public static short getBit(short value, int index) {
-        checkArgument(index >= 0 && index < 16);
-        return (short)getBit((int) value, index);
-    }
-
     // The second (0-indexed) least significant nibble. Used for half-carry in
     // 16-bit arithmetic instructions.
     public static short clearTopNibble(short val) {

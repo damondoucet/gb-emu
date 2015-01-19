@@ -193,11 +193,11 @@ public final class MemoryInstructions {
             _writeToHL = writeToHL;
         }
 
-        public static LdiInstruction LdiFromHL() {
+        public static LdiInstruction ldiFromHL() {
             return new LdiInstruction(false);
         }
 
-        public static LdiInstruction LdiToHL() {
+        public static LdiInstruction ldiToHL() {
             return new LdiInstruction(true);
         }
 
@@ -236,11 +236,11 @@ public final class MemoryInstructions {
             _writeToHL = writeToHL;
         }
 
-        public static LddInstruction LddFromHL() {
+        public static LddInstruction lddFromHL() {
             return new LddInstruction(false);
         }
 
-        public static LddInstruction LddToHL() {
+        public static LddInstruction lddToHL() {
             return new LddInstruction(true);
         }
 
@@ -337,10 +337,10 @@ public final class MemoryInstructions {
         }
     }
 
-    public static class LdSpToHlInstruction extends Instruction {
+    public static class LdSpToHLInstruction extends Instruction {
         private final byte _offset;
 
-        public LdSpToHlInstruction(byte offset) {
+        public LdSpToHLInstruction(byte offset) {
             _offset = offset;
         }
 
@@ -348,7 +348,7 @@ public final class MemoryInstructions {
         public boolean equals(Object rhs) {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
-            LdSpToHlInstruction other = (LdSpToHlInstruction)rhs;
+            LdSpToHLInstruction other = (LdSpToHLInstruction)rhs;
             return _offset == other._offset;
         }
 

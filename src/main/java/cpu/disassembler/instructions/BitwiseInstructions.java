@@ -6,6 +6,7 @@ import cpu.disassembler.instruction_args.Register8;
 import cpu.disassembler.instruction_args.SettableValueContainer;
 import cpu.disassembler.instruction_args.ValueContainer;
 import util.Util;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Objects;
 
@@ -460,6 +461,7 @@ public final class BitwiseInstructions {
         private final SettableValueContainer<Byte> _container;
 
         public BitInstruction(int bitIndex, SettableValueContainer<Byte> container) {
+            checkArgument(bitIndex >= 0 && bitIndex < 8);
             _bitIndex = bitIndex;
             _container = container;
         }
@@ -502,6 +504,7 @@ public final class BitwiseInstructions {
         private final SettableValueContainer<Byte> _container;
 
         public ResInstruction(int bitIndex, SettableValueContainer<Byte> container) {
+            checkArgument(bitIndex >= 0 && bitIndex < 8);
             _bitIndex = bitIndex;
             _container = container;
         }
@@ -540,6 +543,7 @@ public final class BitwiseInstructions {
         private final SettableValueContainer<Byte> _container;
 
         public SetInstruction(int bitIndex, SettableValueContainer<Byte> container) {
+            checkArgument(bitIndex >= 0 && bitIndex < 8);
             _bitIndex = bitIndex;
             _container = container;
         }

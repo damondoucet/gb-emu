@@ -68,8 +68,7 @@ public class ArithmeticInstructionTests {
 
         Assert.assertEquals(expectedHL, (short)Register16.HL.get(state));
 
-        int isZero = expectedHL == 0 ? 1 : 0;
-        testFlags(state, isZero, expectedSubtract, expectedHalfCarry, expectedCarry);
+        testFlags(state, 0, expectedSubtract, expectedHalfCarry, expectedCarry);
     }
 
     @Test
@@ -83,12 +82,13 @@ public class ArithmeticInstructionTests {
 
     @Test
     public void testAdd16() {
-        Instruction instr = new ArithmeticInstructions.Add16Instruction(Register16.BC);
+        Instruction instr = new ArithmeticInstructions.Add16Instruction(
+                Register16.HL, Register16.BC);
         testInstr16(instr, (short) 0, (short) 0, (short) 0, 0, 0, 0);
         testInstr16(instr, (short) 10, (short) 7, (short) 17, 0, 0, 0);
         testInstr16(instr, (short) 2048, (short) 2048, (short) 4096, 0, 1, 0);
         testInstr16(instr, (short) 0xf000, (short) 0x1001, (short) 1, 1, 0, 0);
-        testInstr16(instr, (short)0xffff, (short) 1, (short) 0, 1, 1, 0);
+        testInstr16(instr, (short) 0xffff, (short) 1, (short) 0, 1, 1, 0);
     }
 
     @Test
@@ -110,26 +110,14 @@ public class ArithmeticInstructionTests {
     }
 
     @Test
-    public void testSub8() {
-        Instruction instr = new ArithmeticInstructions.Sub8Instruction(Register8.B);
-        testInstr8(instr, (byte)0, (byte)0, 0, (byte)0, 0, 0, 1);
-        testInstr8(instr, (byte)0x10, (byte)0x10, 0, (byte)0, 0, 0, 1);
-        testInstr8(instr, (byte)0xe, (byte)0xf, 0, (byte)0xff, 1, 1, 1);
-        testInstr8(instr, (byte)0xf, (byte)0x10, 0, (byte)0xff, 1, 0, 1);
-        testInstr8(instr, (byte)0xe0, (byte)0xf0, 0, (byte)0xf0, 1, 0, 1);
-        testInstr8(instr, (byte)0xf0, (byte)0x01, 0, (byte)0xef, 0, 1, 1);
-    }
-
-    @Test
-    public void testSub16() {
-        Instruction instr = new ArithmeticInstructions.Sub16Instruction(Register16.BC);
-        testInstr16(instr, (short)0, (short)0, (short)0, 0, 0, 1);
-        testInstr16(instr, (short)0x10, (short)0x10, (short)0, 0, 0, 1);
-        testInstr16(instr, (short)0xe, (short)0xf, (short)0xffff, 1, 1, 1);
-        testInstr16(instr, (short)0x0f00, (short)0x1000, (short)0xff00, 1, 0, 1);
-        testInstr16(instr, (short)0xe000, (short)0xf000, (short)0xf000, 1, 0, 1);
-        testInstr16(instr, (short)0xf000, (short)0x0100, (short)0xef00, 0, 1, 1);
-        testInstr16(instr, (short)0x0100, (short)0x00ff, (short)0x0001, 0, 0, 1);
+    public void testSub() {
+        Instruction instr = new ArithmeticInstructions.SubInstruction(Register8.B);
+        testInstr8(instr, (byte) 0, (byte) 0, 0, (byte) 0, 0, 0, 1);
+        testInstr8(instr, (byte) 0x10, (byte) 0x10, 0, (byte) 0, 0, 0, 1);
+        testInstr8(instr, (byte) 0xe, (byte) 0xf, 0, (byte) 0xff, 1, 1, 1);
+        testInstr8(instr, (byte) 0xf, (byte) 0x10, 0, (byte) 0xff, 1, 0, 1);
+        testInstr8(instr, (byte) 0xe0, (byte) 0xf0, 0, (byte) 0xf0, 1, 0, 1);
+        testInstr8(instr, (byte) 0xf0, (byte) 0x01, 0, (byte) 0xef, 0, 1, 1);
     }
 
     @Test
