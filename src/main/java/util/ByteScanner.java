@@ -33,6 +33,10 @@ public class ByteScanner {
         checkState(_index < _bytes.length);
     }
 
+    public void seekOffset(int delta) {
+        seek(_index + delta);
+    }
+
     public byte peek() {
         return peek(0);
     }
@@ -51,6 +55,12 @@ public class ByteScanner {
         byte ret = _bytes[_index];
         _index++;
         return ret;
+    }
+
+    public short readLittleEndianShort() {
+        // Little Endian has the least significant byte in the lowest address
+        byte[] bytes = readBytes(2);
+        return Util.shortFromBytes(bytes[1], bytes[0]);
     }
 
     public byte[] readBytes(int length) {

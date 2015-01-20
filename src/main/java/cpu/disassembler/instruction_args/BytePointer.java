@@ -26,7 +26,7 @@ public class BytePointer implements SettableValueContainer<Byte> {
 
     @Override
     public boolean equals(Object rhs) {
-        return rhs != null && getClass() == rhs.getClass() &&
+        return rhs != null && getClass().equals(rhs.getClass()) &&
                 _address == ((BytePointer)rhs)._address;
     }
     @Override
@@ -36,6 +36,6 @@ public class BytePointer implements SettableValueContainer<Byte> {
 
     @Override
     public String toString() {
-        return Util.shortToHexString(_address);
+        return String.format("(%s)", Util.shortToHexString(_address));
     }
 }

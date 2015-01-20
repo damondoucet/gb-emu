@@ -9,13 +9,13 @@ import util.Util;
 import java.util.Objects;
 
 /**
- * Instructions for controlling the instruction pointer:
+ * Instructions for controlling the program counter:
  *      NOP,
  *      JP, JR,
  *      CALL, RST
  */
-public final class IPControlInstructions {
-    private IPControlInstructions() {}
+public final class PCControlInstructions {
+    private PCControlInstructions() {}
 
     public static class NopInstruction extends Instruction {
         @Override
@@ -99,7 +99,7 @@ public final class IPControlInstructions {
             JpInstruction other = (JpInstruction)rhs;
             return _flag == other._flag &&
                     _negated == other._negated &&
-                    _address == other._address;
+                    _address.equals(other._address);
         }
 
         @Override
@@ -192,7 +192,7 @@ public final class IPControlInstructions {
             CallInstruction other = (CallInstruction)rhs;
             return _flag == other._flag &&
                     _negated == other._negated &&
-                    _address == other._address;
+                    _address.equals(other._address);
         }
 
         @Override
@@ -295,7 +295,7 @@ public final class IPControlInstructions {
     public static class RetiInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
-            return rhs != null && getClass() == rhs.getClass();
+            return rhs != null && getClass().equals(rhs.getClass());
         }
 
         @Override

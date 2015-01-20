@@ -53,11 +53,11 @@ public final class Util {
     }
 
     public static String byteToHexString(byte b) {
-        return String.format("%02X", b).toUpperCase();
+        return "$" + String.format("%02X", b).toUpperCase();
     }
 
     public static String shortToHexString(short s) {
-        return String.format("%04X", s).toUpperCase();
+        return "$" + String.format("%04X", s).toUpperCase();
     }
 
     public static short swapBytes(short value) {

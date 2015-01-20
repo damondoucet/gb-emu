@@ -78,7 +78,7 @@ public final class BitwiseInstructions {
     public static class RlaInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
-            return rhs != null && getClass() == rhs.getClass();
+            return rhs != null && getClass().equals(rhs.getClass());
         }
 
         @Override
@@ -100,7 +100,7 @@ public final class BitwiseInstructions {
     public static class RraInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
-            return rhs != null && getClass() == rhs.getClass();
+            return rhs != null && getClass().equals(rhs.getClass());
         }
 
         @Override
@@ -122,7 +122,7 @@ public final class BitwiseInstructions {
     public static class RrcaInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
-            return rhs != null && getClass() == rhs.getClass();
+            return rhs != null && getClass().equals(rhs.getClass());
         }
 
         @Override
@@ -144,7 +144,7 @@ public final class BitwiseInstructions {
     public static class RlcaInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
-            return rhs != null && getClass() == rhs.getClass();
+            return rhs != null && getClass().equals(rhs.getClass());
         }
 
         @Override
@@ -177,7 +177,7 @@ public final class BitwiseInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             RlcInstruction other = (RlcInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -210,7 +210,7 @@ public final class BitwiseInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             RrcInstruction other = (RrcInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -242,7 +242,7 @@ public final class BitwiseInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             RlInstruction other = (RlInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -274,7 +274,7 @@ public final class BitwiseInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             RrInstruction other = (RrInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -307,7 +307,7 @@ public final class BitwiseInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             SlaInstruction other = (SlaInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -348,7 +348,7 @@ public final class BitwiseInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             SraInstruction other = (SraInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -389,7 +389,7 @@ public final class BitwiseInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             SrlInstruction other = (SrlInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -429,7 +429,7 @@ public final class BitwiseInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             SwapInstruction other = (SwapInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -472,7 +472,7 @@ public final class BitwiseInstructions {
                 return false;
             BitInstruction other = (BitInstruction)rhs;
             return _bitIndex == other._bitIndex &&
-                    _container == other._container;
+                    _container.equals(other._container);
         }
 
         @Override
@@ -515,7 +515,7 @@ public final class BitwiseInstructions {
                 return false;
             ResInstruction other = (ResInstruction)rhs;
             return _bitIndex == other._bitIndex &&
-                    _container == other._container;
+                    _container.equals(other._container);
         }
 
         @Override
@@ -554,7 +554,7 @@ public final class BitwiseInstructions {
                 return false;
             SetInstruction other = (SetInstruction)rhs;
             return _bitIndex == other._bitIndex &&
-                    _container == other._container;
+                    _container.equals(other._container);
         }
 
         @Override
@@ -586,7 +586,7 @@ public final class BitwiseInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             AndInstruction other = (AndInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -622,8 +622,8 @@ public final class BitwiseInstructions {
         public boolean equals(Object rhs) {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
-            AndInstruction other = (AndInstruction)rhs;
-            return _container == other._container;
+            OrInstruction other = (OrInstruction)rhs;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -659,8 +659,8 @@ public final class BitwiseInstructions {
         public boolean equals(Object rhs) {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
-            AndInstruction other = (AndInstruction)rhs;
-            return _container == other._container;
+            XorInstruction other = (XorInstruction)rhs;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -688,7 +688,7 @@ public final class BitwiseInstructions {
     public static class CplInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
-            return rhs != null && getClass() == rhs.getClass();
+            return rhs != null && getClass().equals(rhs.getClass());
         }
 
         @Override

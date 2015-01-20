@@ -1,6 +1,11 @@
 """
     Generate an instruction class shell.
 
+    Note that this is not necessarily an end-all-be-all generator. It's meant
+    to be used as a simple skeleton to get rid of a lot of manual labor. (e.g.,
+    with the boolean type--it's hard to predict, without asking for more
+    arguments and requiring more work, what the class should really look like).
+
     Arguments:
         Mnemonic Class [<arg 1 type> <arg 1 name> [<arg 2 type> <arg 2 name> [...]]]
 
@@ -15,7 +20,7 @@ import argparse
 NO_ARGS_FORMAT = """public static class %sInstruction extends Instruction {
     @Override
     public boolean equals(Object rhs) {
-        return rhs != null && getClass() == rhs.getClass();
+        return rhs != null && getClass().equals(rhs.getClass());
     }
 
     @Override
@@ -66,6 +71,8 @@ ARGS_FORMAT = """public static class %sInstruction extends Instruction {
     }
 }"""
 
+PRIMITIVE_TYPES = ["int", "short", "byte", "boolean"]
+
 class Argument(object):
     def __init__(self, type_str, lower_camel_name_str):
         self.type_str = type_str
@@ -84,6 +91,9 @@ class Argument(object):
     def is_int(self):
         return self.type_str == "int"
 
+    def is_primitive(self):
+        return self.type_str in PRIMITIVE_TYPES
+
     # Which format specifier to use for toString()
     def format_specifier(self):
         return "%d" if self.is_int() else "%s"
@@ -96,6 +106,10 @@ class Argument(object):
 
         return ret
 
+    def equals_str(self):
+        fmt = "%s == other.%s" if self.is_primitive() else "%s.equals(%s)"
+        return fmt % (self.field_name(), self.field_name())
+
 def create_init_str(arguments):
     return "\n        ".join([
         "%s = %s;" % (arg.field_name(), arg.lower_camel_name_str)
@@ -103,8 +117,7 @@ def create_init_str(arguments):
 
 def create_equals_str(arguments):
     return " &&\n               ".join([
-        "%s == other.%s" % (arg.field_name(), arg.field_name())
-            for arg in arguments])
+        arg.equals_str() for arg in arguments])
 
 def create_class_string_with_args(mnemonic, class_name, arguments):
     field_strs = "\n    ".join([arg.field_str() for arg in arguments])

@@ -40,7 +40,7 @@ public class Register16 implements SettableValueContainer<Short> {
     @Override
     public boolean equals(Object rhs) {
         return rhs != null &&
-                getClass() != rhs.getClass() &&
+                getClass().equals(rhs.getClass()) &&
                 _index == ((Register16)rhs)._index;
     }
 

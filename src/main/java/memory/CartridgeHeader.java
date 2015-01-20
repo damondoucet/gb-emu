@@ -178,14 +178,12 @@ public class CartridgeHeader {
             0, 8, 17, 31, -120, -119, 0, 14, -36, -52, 110, -26, -35, -35, -39, -103,
             -69, -69, 103, 99, 110, 14, -20, -52, -35, -36, -103, -97, -69, -71, 51, 62
     };
-    private static byte[] readNintendoGraphic(ByteScanner scanner) {
+    private static void readNintendoGraphic(ByteScanner scanner) {
         checkState(scanner.getIndex() == 0x104);
         byte[] bytes = scanner.readBytes(EXPECTED_NINTENDO_GRAPHIC.length);
 
         checkArgument(Arrays.equals(bytes, EXPECTED_NINTENDO_GRAPHIC),
                 "Nintendo Graphic did not match expected bytes");
-
-        return bytes;
     }
 
     private final static int MAX_GAME_TITLE_LENGTH = 15;

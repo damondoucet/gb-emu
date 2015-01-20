@@ -43,7 +43,7 @@ public class Register8 implements SettableValueContainer<Byte> {
     @Override
     public boolean equals(Object rhs) {
         return rhs != null &&
-                getClass() != rhs.getClass() &&
+                getClass().equals(rhs.getClass()) &&
                 _index == ((Register8)rhs)._index;
     }
 

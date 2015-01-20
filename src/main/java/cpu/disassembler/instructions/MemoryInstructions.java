@@ -65,7 +65,7 @@ public final class MemoryInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             PushInstruction other = (PushInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -96,7 +96,7 @@ public final class MemoryInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             PopInstruction other = (PopInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -129,8 +129,8 @@ public final class MemoryInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             Ld8Instruction other = (Ld8Instruction)rhs;
-            return _dest == other._dest &&
-                    _src == other._src;
+            return _dest.equals(other._dest) &&
+                    _src.equals(other._src);
         }
 
         @Override
@@ -163,8 +163,8 @@ public final class MemoryInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             Ld16Instruction other = (Ld16Instruction)rhs;
-            return _dest == other._dest &&
-                    _src == other._src;
+            return _dest.equals(other._dest) &&
+                    _src.equals(other._src);
         }
 
         @Override
@@ -318,7 +318,7 @@ public final class MemoryInstructions {
     public static class LdHLToSpInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
-            return rhs != null && getClass() == rhs.getClass();
+            return rhs != null && getClass().equals(rhs.getClass());
         }
 
         @Override

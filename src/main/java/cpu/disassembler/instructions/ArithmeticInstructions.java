@@ -126,7 +126,7 @@ public final class ArithmeticInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             Add8Instruction other = (Add8Instruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -160,8 +160,8 @@ public final class ArithmeticInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             Add16Instruction other = (Add16Instruction)rhs;
-            return _dest == other._dest &&
-                    _src == other._src;
+            return _dest.equals(other._dest) &&
+                    _src.equals(other._src);
         }
 
         @Override
@@ -192,7 +192,7 @@ public final class ArithmeticInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             AdcInstruction other = (AdcInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -223,7 +223,7 @@ public final class ArithmeticInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             Inc8Instruction other = (Inc8Instruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -254,7 +254,7 @@ public final class ArithmeticInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             Inc16Instruction other = (Inc16Instruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -285,7 +285,7 @@ public final class ArithmeticInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             SubInstruction other = (SubInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -316,7 +316,7 @@ public final class ArithmeticInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             SbcInstruction other = (SbcInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -347,7 +347,7 @@ public final class ArithmeticInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             Dec8Instruction other = (Dec8Instruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -378,7 +378,7 @@ public final class ArithmeticInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             Dec16Instruction other = (Dec16Instruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -400,7 +400,7 @@ public final class ArithmeticInstructions {
     public static class ScfInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
-            return rhs != null && getClass() == rhs.getClass();
+            return rhs != null && getClass().equals(rhs.getClass());
         }
 
         @Override
@@ -424,7 +424,7 @@ public final class ArithmeticInstructions {
     public static class CcfInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
-            return rhs != null && getClass() == rhs.getClass();
+            return rhs != null && getClass().equals(rhs.getClass());
         }
 
         @Override
@@ -458,7 +458,7 @@ public final class ArithmeticInstructions {
             if (rhs == null || getClass() != rhs.getClass())
                 return false;
             CpInstruction other = (CpInstruction)rhs;
-            return _container == other._container;
+            return _container.equals(other._container);
         }
 
         @Override
@@ -503,7 +503,7 @@ public final class ArithmeticInstructions {
     public static class DaaInstruction extends Instruction {
         @Override
         public boolean equals(Object rhs) {
-            return rhs != null && getClass() == rhs.getClass();
+            return rhs != null && getClass().equals(rhs.getClass());
         }
 
         @Override

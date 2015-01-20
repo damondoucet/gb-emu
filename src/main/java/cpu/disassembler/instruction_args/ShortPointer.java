@@ -26,7 +26,7 @@ public class ShortPointer implements SettableValueContainer<Short> {
 
     @Override
     public boolean equals(Object rhs) {
-        return rhs != null && getClass() == rhs.getClass() &&
+        return rhs != null && getClass().equals(rhs.getClass()) &&
                 _address == ((ShortPointer)rhs)._address;
     }
     @Override
@@ -36,6 +36,6 @@ public class ShortPointer implements SettableValueContainer<Short> {
 
     @Override
     public String toString() {
-        return Util.shortToHexString(_address);
+        return String.format("(%s)", Util.shortToHexString(_address));
     }
 }

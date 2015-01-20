@@ -57,8 +57,7 @@ public class ArithmeticInstructionTests {
             short bcValue,
             short expectedHL,
             int expectedCarry,
-            int expectedHalfCarry,
-            int expectedSubtract) {
+            int expectedHalfCarry) {
         EmulatorState state = new EmulatorState();
 
         Register16.HL.set(state, hlValue);
@@ -68,7 +67,7 @@ public class ArithmeticInstructionTests {
 
         Assert.assertEquals(expectedHL, (short)Register16.HL.get(state));
 
-        testFlags(state, 0, expectedSubtract, expectedHalfCarry, expectedCarry);
+        testFlags(state, 0, 0, expectedHalfCarry, expectedCarry);
     }
 
     @Test
@@ -84,11 +83,11 @@ public class ArithmeticInstructionTests {
     public void testAdd16() {
         Instruction instr = new ArithmeticInstructions.Add16Instruction(
                 Register16.HL, Register16.BC);
-        testInstr16(instr, (short) 0, (short) 0, (short) 0, 0, 0, 0);
-        testInstr16(instr, (short) 10, (short) 7, (short) 17, 0, 0, 0);
-        testInstr16(instr, (short) 2048, (short) 2048, (short) 4096, 0, 1, 0);
-        testInstr16(instr, (short) 0xf000, (short) 0x1001, (short) 1, 1, 0, 0);
-        testInstr16(instr, (short) 0xffff, (short) 1, (short) 0, 1, 1, 0);
+        testInstr16(instr, (short) 0, (short) 0, (short) 0, 0, 0);
+        testInstr16(instr, (short) 10, (short) 7, (short) 17, 0, 0);
+        testInstr16(instr, (short) 2048, (short) 2048, (short) 4096, 0, 1);
+        testInstr16(instr, (short) 0xf000, (short) 0x1001, (short) 1, 1, 0);
+        testInstr16(instr, (short) 0xffff, (short) 1, (short) 0, 1, 1);
     }
 
     @Test

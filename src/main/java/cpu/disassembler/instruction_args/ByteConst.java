@@ -25,7 +25,7 @@ public class ByteConst implements ValueContainer<Byte> {
 
     @Override
     public boolean equals(Object rhs) {
-        return rhs != null && getClass() == rhs.getClass() &&
+        return rhs != null && getClass().equals(rhs.getClass()) &&
                 _value == ((ByteConst)rhs)._value;
     }
 

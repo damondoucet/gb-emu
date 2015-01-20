@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
  * the ROM headers found on the internet.
  */
 public class CartridgeHeaderTests {
-    private ByteScanner fromResourceName(String resourceName) throws IOException, URISyntaxException {
+    private ByteScanner fromResourceName(String resourceName) throws IOException {
         // Weird hack because on Windows, the path returned below has a leading /...
         // TODO(ddoucet): does this work on other platforms?
         String path = getClass().getClassLoader().getResource(resourceName).getPath();
@@ -29,8 +29,6 @@ public class CartridgeHeaderTests {
             Assert.assertEquals(expectedHeader, CartridgeHeader.parse(scanner));
         } catch(IOException e) {
             Assert.fail("Uncaught IOException (does the file exist?): " + e.toString());
-        } catch(URISyntaxException e) {
-            Assert.fail("Uncaught URISyntaxException: " + e.toString());
         }
     }
 

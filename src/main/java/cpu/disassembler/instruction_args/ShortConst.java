@@ -25,7 +25,7 @@ public class ShortConst implements ValueContainer<Short> {
 
     @Override
     public boolean equals(Object rhs) {
-        return rhs != null && getClass() == rhs.getClass() &&
+        return rhs != null && getClass().equals(rhs.getClass()) &&
                 _value == ((ShortConst)rhs)._value;
     }
 
