@@ -1,32 +1,38 @@
 package memory;
 
+import memory.components.memory_bank_controllers.MemoryBankController1;
+import memory.components.memory_bank_controllers.NoMemoryBankController;
 import org.junit.Assert;
 import org.junit.Test;
 import util.ByteScanner;
+import util.Util;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 /**
  * The values for these ROMs were found using a hex editor and descriptions of
  * the ROM headers found on the internet.
+ *
+ * Note that MemoryBankController equality is determined only through class,
+ * not through any state, in order to simplify the testing of CartridgeHeader
+ * parsing.
  */
 public class CartridgeHeaderTests {
-    private ByteScanner fromResourceName(String resourceName) throws IOException {
+    private byte[] fromResourceName(String resourceName) throws IOException {
         // Weird hack because on Windows, the path returned below has a leading /...
         // TODO(ddoucet): does this work on other platforms?
         String path = getClass().getClassLoader().getResource(resourceName).getPath();
         File file = new File(path);
         String realPath = file.getAbsolutePath().replace("%20", " ");
 
-        return ByteScanner.fromFile(realPath);
+        return Util.bytesFromFile(realPath);
     }
 
     private void testRomHeader(String path, CartridgeHeader expectedHeader) {
         try {
-            ByteScanner scanner = fromResourceName(path);
-            Assert.assertEquals(expectedHeader, CartridgeHeader.parse(scanner));
+            byte[] bytes = fromResourceName(path);
+            Assert.assertEquals(expectedHeader, CartridgeHeader.parse(bytes));
         } catch(IOException e) {
             Assert.fail("Uncaught IOException (does the file exist?): " + e.toString());
         }
@@ -40,7 +46,7 @@ public class CartridgeHeaderTests {
                 (byte)0,
                 false,
                 false,
-                new MemoryBankController1(),
+                new MemoryBankController1(null, 0),
                 8,
                 0,
                 false,
@@ -59,7 +65,7 @@ public class CartridgeHeaderTests {
                 (byte)0,
                 false,
                 false,
-                null,
+                new NoMemoryBankController(null),
                 2,
                 0,
                 false,
@@ -78,7 +84,7 @@ public class CartridgeHeaderTests {
                 (byte)0x00,
                 false,
                 false,
-                new MemoryBankController1(),
+                new MemoryBankController1(null, 0),
                 8,
                 0,
                 true,
@@ -97,7 +103,7 @@ public class CartridgeHeaderTests {
                 (byte)0x00,
                 false,
                 false,
-                new MemoryBankController1(),
+                new MemoryBankController1(null, 0),
                 16,
                 0,
                 false,
@@ -116,7 +122,7 @@ public class CartridgeHeaderTests {
                 (byte)0x00,
                 false,
                 false,
-                new MemoryBankController1(),
+                new MemoryBankController1(null, 0),
                 4,
                 0,
                 false,
@@ -135,7 +141,7 @@ public class CartridgeHeaderTests {
                 (byte)0x00,
                 false,
                 false,
-                new MemoryBankController1(),
+                new MemoryBankController1(null, 0),
                 16,
                 0,
                 false,
@@ -154,7 +160,7 @@ public class CartridgeHeaderTests {
                 (byte)0x00,
                 false,
                 false,
-                new MemoryBankController1(),
+                new MemoryBankController1(null, 0),
                 8,
                 0,
                 false,
@@ -173,7 +179,7 @@ public class CartridgeHeaderTests {
                 (byte)0x00,
                 false,
                 false,
-                new MemoryBankController1(),
+                new MemoryBankController1(null, 0),
                 4,
                 0,
                 true,
@@ -192,7 +198,7 @@ public class CartridgeHeaderTests {
                 (byte)0,
                 false,
                 false,
-                null,
+                new NoMemoryBankController(null),
                 (byte)2,
                 (byte)0,
                 true,

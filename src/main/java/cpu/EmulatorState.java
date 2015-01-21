@@ -1,7 +1,8 @@
 package cpu;
 
+import memory.CartridgeHeader;
 import memory.Memory;
-import memory.MemoryBankController;
+import memory.components.memory_bank_controllers.MemoryBankController;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -12,14 +13,21 @@ public class EmulatorState {
     public final RegisterState registerState;
     public final Memory memory;
 
+    // This constructor is only used for testing. Using this while trying to
+    // actually run the emulator will likely result in a null pointer exception.
     public EmulatorState() {
-        this(null);
+        this((MemoryBankController)null);
     }
 
-    public EmulatorState(MemoryBankController mbc) {
+    public EmulatorState(CartridgeHeader header) {
+        this(header.MemoryBankController);
+    }
+
+    private EmulatorState(MemoryBankController mbc) {
         interruptsEnabled = true;
         registerState = new RegisterState();
-        memory = new Memory(mbc);
+
+        memory = new Memory(this, mbc);
     }
 
     public void halt() {

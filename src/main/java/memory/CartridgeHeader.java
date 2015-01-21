@@ -1,6 +1,9 @@
 package memory;
 
 import com.google.common.base.MoreObjects;
+import memory.components.memory_bank_controllers.MemoryBankController;
+import memory.components.memory_bank_controllers.MemoryBankController1;
+import memory.components.memory_bank_controllers.NoMemoryBankController;
 import util.ByteScanner;
 import util.Util;
 
@@ -27,7 +30,7 @@ public class CartridgeHeader {
     public final byte NewLicenseeCode;
     public final boolean IsSuperGameboyGame;
     public final boolean HasRam;
-    public final MemoryBankController MemoryBankController;
+    public final memory.components.memory_bank_controllers.MemoryBankController MemoryBankController;
     public final int NumRomBanks; // One bank is 16kB
     public final int NumRamKilobytes;
     public final boolean IsJapanese;
@@ -129,7 +132,8 @@ public class CartridgeHeader {
     }
 
     private final static int HEADER_START = 0x104;
-    public static CartridgeHeader parse(ByteScanner scanner) {
+    public static CartridgeHeader parse(byte[] bytes) {
+        ByteScanner scanner = new ByteScanner(bytes);
         scanner.seek(HEADER_START);
 
         readNintendoGraphic(scanner);
@@ -137,9 +141,13 @@ public class CartridgeHeader {
         boolean isGameboyColorGame = readIsGameboyColorGame(scanner);
         byte newLicenseeCode = readNewLicenseeCode(scanner);
         boolean isSuperGameboyGame = readIsSuperGameboyGame(scanner);
-        MemoryBankController mbc = readMemoryBankController(scanner);
+
+        byte mbcByte = readMbcByte(scanner);
         int numRomBanks = readNumRomBanks(scanner);
         int numRamKilobytes = readNumRamKilobytes(scanner);
+
+        MemoryBankController mbc = mbcFromByte(mbcByte, bytes, numRamKilobytes);
+
         boolean isJapanese = readIsJapanese(scanner);
         byte oldLicenseeType = readOldLicenseeType(scanner);
         byte maskRomVersionNumber = readMaskRomVersionNumber(scanner);
@@ -230,15 +238,21 @@ public class CartridgeHeader {
         return data == SUPER_GB;
     }
 
-    private final static byte ROM_ONLY = 0x00;
-    private final static byte ROM_MBC1 = 0x01;
-    private static MemoryBankController readMemoryBankController(ByteScanner scanner) {
+    private static byte readMbcByte(ByteScanner scanner) {
         checkState(scanner.getIndex() == 0x147);
 
         byte data = scanner.readByte();
         checkArgument(data == ROM_ONLY || data == ROM_MBC1);
 
-        return data == ROM_MBC1 ? new MemoryBankController1() : null;
+        return data;
+    }
+
+    private final static byte ROM_ONLY = 0x00;
+    private final static byte ROM_MBC1 = 0x01;
+    private static MemoryBankController mbcFromByte(byte b, byte[] romBytes, int ramKb) {
+        return b == ROM_MBC1
+                ? new MemoryBankController1(romBytes, ramKb)
+                : new NoMemoryBankController(romBytes);
     }
 
     private static int readNumRomBanks(ByteScanner scanner) {

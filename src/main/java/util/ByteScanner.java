@@ -81,8 +81,4 @@ public class ByteScanner {
 
         return ret;
     }
-
-    public static ByteScanner fromFile(String path) throws IOException {
-        return new ByteScanner(Files.readAllBytes(Paths.get(path)));
-    }
 }

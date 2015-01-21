@@ -1,5 +1,9 @@
 package util;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
@@ -7,6 +11,10 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public final class Util {
     private Util() {}
+
+    public static byte[] bytesFromFile(String path) throws IOException {
+        return Files.readAllBytes(Paths.get(path));
+    }
 
     public static short shortFromBytes(byte high, byte low) {
         // if Java had unsigned bytes, we could do

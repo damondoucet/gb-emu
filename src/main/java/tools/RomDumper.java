@@ -19,16 +19,18 @@ public class RomDumper {
     private final static int HEADER_START = 0x104;
     private final static int HEADER_END = 0x14F;
 
+    private byte[] _bytes;
     private ByteScanner _scanner;
     private InstructionDecoder _decoder;
 
-    private RomDumper(ByteScanner scanner) {
-        _scanner = scanner;
+    private RomDumper(byte[] bytes) {
+        _bytes = bytes;
+        _scanner = new ByteScanner(bytes);
         _decoder = new RootInstructionDecoder();
     }
 
     private void printHeader() {
-        System.out.println(CartridgeHeader.parse(_scanner).toString());
+        System.out.println(CartridgeHeader.parse(_bytes).toString());
         _scanner.seek(0);
     }
 
@@ -85,7 +87,7 @@ public class RomDumper {
         System.out.println("Path?");
 
         String path = reader.readLine();
-        ByteScanner scanner = ByteScanner.fromFile(path);
-        new RomDumper(scanner).dumpRom();
+        byte[] bytes = Util.bytesFromFile(path);
+        new RomDumper(bytes).dumpRom();
     }
 }

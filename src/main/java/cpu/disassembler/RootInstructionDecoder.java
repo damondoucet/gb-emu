@@ -14,8 +14,6 @@ import java.util.List;
  * stream.
  *
  * http://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
- *
- * TODO(ddoucet): add factories to list
  */
 public class RootInstructionDecoder extends InstructionDecoder {
     public RootInstructionDecoder() {
