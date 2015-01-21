@@ -123,8 +123,8 @@ public class CartridgeHeader {
                 .add("IsJapanese", IsJapanese)
                 .add("OldLicenseeType", OldLicenseeType)
                 .add("MaskRomVersionNumber", MaskRomVersionNumber)
-                .add("ComplementCheck", ComplementCheck)
-                .add("Checksum", Checksum)
+                .add("ComplementCheck", Util.byteToHexString(ComplementCheck))
+                .add("Checksum", Util.shortToHexString(Checksum))
                 .toString();
     }
 
