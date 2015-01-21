@@ -52,8 +52,12 @@ public final class Util {
         return (short)(val & ((1 << 12) - 1));
     }
 
+    public static String byteToHexStringWithoutPrefix(byte b) {
+        return String.format("%02X", b).toUpperCase();
+    }
+
     public static String byteToHexString(byte b) {
-        return "$" + String.format("%02X", b).toUpperCase();
+        return "$" + byteToHexStringWithoutPrefix(b);
     }
 
     public static String shortToHexString(short s) {

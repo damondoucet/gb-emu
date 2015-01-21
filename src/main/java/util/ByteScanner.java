@@ -22,6 +22,10 @@ public class ByteScanner {
         _bytes = bytes;
     }
 
+    public boolean isEof() {
+        return _index >= _bytes.length;
+    }
+
     public int getIndex() {
         return _index;
     }
