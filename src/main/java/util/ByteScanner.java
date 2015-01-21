@@ -14,16 +14,20 @@ import static com.google.common.base.Preconditions.*;
  */
 public class ByteScanner {
     private int _index;
-    private final byte[] _bytes;
+    private final ByteSource _bytes;
 
     public ByteScanner(byte[] bytes) {
-        checkArgument(bytes.length > 0);
+        this(new ArrayByteSource(bytes));
+    }
+
+    public ByteScanner(ByteSource bytes) {
+        checkArgument(bytes.length() > 0);
         _index = 0;
         _bytes = bytes;
     }
 
     public boolean isEof() {
-        return _index >= _bytes.length;
+        return _index >= _bytes.length();
     }
 
     public int getIndex() {
@@ -34,7 +38,7 @@ public class ByteScanner {
         _index = index;
 
         checkState(_index >= 0);
-        checkState(_index < _bytes.length);
+        checkState(_index < _bytes.length());
     }
 
     public void seekOffset(int delta) {
@@ -45,18 +49,18 @@ public class ByteScanner {
         return peek(0);
     }
 
-    public byte peek(int index) {
+    public byte peek(int delta) {
         checkState(_index >= 0);
-        checkArgument(_index + index < _bytes.length);
+        checkArgument(_index + delta < _bytes.length());
 
-        return _bytes[_index + index];
+        return _bytes.get(_index + delta);
     }
 
     public byte readByte() {
         checkState(_index >= 0);
-        checkState(_index < _bytes.length);
+        checkState(_index < _bytes.length());
 
-        byte ret = _bytes[_index];
+        byte ret = _bytes.get(_index);
         _index++;
         return ret;
     }
@@ -69,10 +73,12 @@ public class ByteScanner {
 
     public byte[] readBytes(int length) {
         checkState(_index >= 0);
-        checkArgument(_index + length - 1 < _bytes.length);
+        checkArgument(_index + length - 1 < _bytes.length());
 
-        byte[] ret = Arrays.copyOfRange(_bytes, _index, _index + length);
-        _index += length;
+        byte[] ret = new byte[length];
+        for (int i = 0; i < length; i++)
+            ret[i] = readByte();
+
         return ret;
     }
 
