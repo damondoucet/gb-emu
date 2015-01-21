@@ -92,6 +92,10 @@ public class MemoryDecoderTests extends DecoderTests {
         testDecode(new byte[] { (byte)0xF0, (byte)0x12 },
                 new MemoryInstructions.Ld8Instruction(
                         Register8.A, new BytePointer((short)0xFF12)), 12);
+
+        testDecode(new byte[] { (byte)0xF0, (byte)0x8F },
+                new MemoryInstructions.Ld8Instruction(Register8.A, new BytePointer((short)0xFF8F)), 12);
+
     }
 
     @Test

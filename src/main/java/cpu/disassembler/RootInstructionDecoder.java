@@ -551,7 +551,7 @@ public class RootInstructionDecoder extends InstructionDecoder {
         @Override
         protected Instruction uncheckedDecodeInstruction(ByteScanner scanner) {
             byte command = scanner.readByte();
-            short addr = (short)(0xFF00 + scanner.readByte());
+            short addr = (short)(0xFF00 + (scanner.readByte() & 0xFF));
             SettableValueContainer<Byte> container = new BytePointer(addr);
 
             return (command & 0xFF) == 0xE0
