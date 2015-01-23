@@ -34,37 +34,8 @@ public class RomDumper {
         _scanner.seek(0);
     }
 
-    // Create a String of the bytes between originalIndex and the scanner's
-    // current position.
-    private String getByteString(int originalIndex) {
-        int finalIndex = _scanner.getIndex();
-
-        _scanner.seek(originalIndex);
-        String ret = "";
-
-        while (_scanner.getIndex() < finalIndex)
-            ret += Util.byteToHexStringWithoutPrefix(_scanner.readByte()) + " ";
-
-        return ret;
-    }
-
-    private String readInstruction() {
-        try {
-            return _decoder.decodeNext(_scanner).toString();
-        } catch (Exception e) {
-            return "DB " + Util.byteToHexString(_scanner.readByte());
-        }
-    }
-
     private void dumpNextInstruction() {
-        int start = _scanner.getIndex();
-
-        String address = Util.shortToHexString((short)start);
-        String instr = readInstruction();
-        String bytes = getByteString(start);
-
-        // The byte string will end with an extra space
-        System.out.println(String.format("%s - %s- %s", address, bytes, instr));
+        System.out.println(Util.readNextInstruction(_decoder, _scanner));
     }
 
     private void dumpRom() {

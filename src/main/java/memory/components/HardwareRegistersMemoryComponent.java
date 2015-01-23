@@ -26,7 +26,7 @@ public class HardwareRegistersMemoryComponent extends MemoryComponent {
     @Override
     protected byte uncheckedRead(short address) {
         // TODO(ddoucet)
-        int register = address - START_ADDRESS;
+        int register = (address & 0xFFFF) - START_ADDRESS;
         System.out.println(String.format("Read from MMIO Register %d (address %s)",
                 register, Util.shortToHexString(address)));
 
@@ -36,7 +36,7 @@ public class HardwareRegistersMemoryComponent extends MemoryComponent {
     @Override
     protected void uncheckedWrite(short address, byte value) {
         // TODO(ddoucet)
-        int register = address - START_ADDRESS;
+        int register = (address & 0xFFFF) - START_ADDRESS;
         System.out.println(String.format("Write %s to MMIO Register %d (address %s)",
                 Util.byteToHexString(value), register, Util.shortToHexString(address)));
 

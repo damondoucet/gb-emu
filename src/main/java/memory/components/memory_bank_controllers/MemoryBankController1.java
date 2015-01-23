@@ -60,7 +60,7 @@ public class MemoryBankController1 extends MemoryBankController {
         // some point, I should figure out how to work that back in here.
         _ramBanks = new Ram[(int)Math.ceil(ramKb / 8.0 / 1024)];
         for (int i = 0; i < _ramBanks.length; i++)
-            _ramBanks[i] = new Ram(RAM_START, RAM_END);
+            _ramBanks[i] = new Ram((short)(RAM_START & 0xFFFF), (short)(RAM_END & 0xFFFF));
 
         _ramEnabled = false;
 
@@ -88,7 +88,7 @@ public class MemoryBankController1 extends MemoryBankController {
                 "Attempt to read RAM (address %s) while RAM is disabled",
                 Util.shortToHexString(address));
 
-        checkArgument((address & 0xFFFF) - (RAM_START & 0xFFFF) < _ramKb * 1024);
+        checkArgument((address & 0xFFFF) - RAM_START < _ramKb * 1024);
 
         return _ramBanks[getRamBank()].read(address);
     }
@@ -99,7 +99,7 @@ public class MemoryBankController1 extends MemoryBankController {
                 "Attempt to write RAM (address %s, value %s) while RAM is disabled",
                 Util.shortToHexString(address), Util.byteToHexString(value));
 
-        checkArgument((address & 0xFFFF) - (RAM_START & 0xFFFF) < _ramKb * 1024);
+        checkArgument((address & 0xFFFF) - RAM_START < _ramKb * 1024);
 
         _ramBanks[getRamBank()].write(address, value);
     }

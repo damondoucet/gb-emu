@@ -16,8 +16,8 @@ import static com.google.common.base.Preconditions.*;
  * of MemoryBankController was found, not the state that the MBC is manipulating.
  */
 public abstract class MemoryBankController extends MemoryComponent {
-    protected final static short RAM_START = (short)0xA000;
-    protected final static short RAM_END = (short)0xC000;
+    protected final static int RAM_START = 0xA000;
+    protected final static int RAM_END = 0xC000;
 
     protected final byte[] _romBytes;
     protected final boolean _hasRam;
