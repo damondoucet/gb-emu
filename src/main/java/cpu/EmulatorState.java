@@ -10,6 +10,7 @@ import memory.MemoryByteSource;
 import memory.components.memory_bank_controllers.MemoryBankController;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.ByteScanner;
+import util.DumpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +61,13 @@ public class EmulatorState {
     public void run() {
         Register16.PC.set(this, (short)0x100);
 
-        while (true)
-            executeNextInstruction();
+        try {
+            while (true)
+                executeNextInstruction();
+        } catch (RuntimeException e) {
+            DumpUtil.printEmulatorState(this);
+            throw e;
+        }
     }
 
     private void executeNextInstruction() {

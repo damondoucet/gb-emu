@@ -4,6 +4,7 @@ import cpu.disassembler.InstructionDecoder;
 import cpu.disassembler.RootInstructionDecoder;
 import memory.CartridgeHeader;
 import util.ByteScanner;
+import util.DumpUtil;
 import util.Util;
 import static com.google.common.base.Preconditions.*;
 
@@ -35,7 +36,7 @@ public class RomDumper {
     }
 
     private void dumpNextInstruction() {
-        System.out.println(Util.readNextInstruction(_decoder, _scanner));
+        System.out.println(DumpUtil.readNextInstruction(_decoder, _scanner));
     }
 
     private void dumpRom() {

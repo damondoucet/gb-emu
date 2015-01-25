@@ -90,37 +90,4 @@ public final class Util {
         short rhsHalf = Util.clearTopNibble(rhs);
         return lhsHalf + rhsHalf >= (1 << 12);
     }
-
-    // Create a String of the bytes between originalIndex and the scanner's
-    // current position.
-    private static String getByteString(ByteScanner scanner, int originalIndex) {
-        int finalIndex = scanner.getIndex();
-
-        scanner.seek(originalIndex);
-        String ret = "";
-
-        while (scanner.getIndex() < finalIndex)
-            ret += Util.byteToHexStringWithoutPrefix(scanner.readByte()) + " ";
-
-        return ret;
-    }
-
-    private static String readInstruction(InstructionDecoder decoder, ByteScanner scanner) {
-        try {
-            return decoder.decodeNext(scanner).toString();
-        } catch (Exception e) {
-            return "DB " + Util.byteToHexString(scanner.readByte());
-        }
-    }
-
-    public static String readNextInstruction(InstructionDecoder decoder, ByteScanner scanner) {
-        int start = scanner.getIndex();
-
-        String address = Util.shortToHexString((short)start);
-        String instr = readInstruction(decoder, scanner);
-        String bytes = getByteString(scanner, start);
-
-        // The byte string will end with an extra space
-        return String.format("%s - %s- %s", address, bytes, instr);
-    }
 }

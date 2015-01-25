@@ -2,13 +2,13 @@ package tools;
 
 import cpu.Debugger;
 import cpu.EmulatorState;
-import cpu.Flags;
 import cpu.disassembler.InstructionDecoder;
 import cpu.disassembler.RootInstructionDecoder;
 import cpu.disassembler.instruction_args.Register16;
 import memory.CartridgeHeader;
 import memory.MemoryByteSource;
 import util.ByteScanner;
+import util.DumpUtil;
 import util.Util;
 
 import java.io.BufferedReader;
@@ -30,7 +30,6 @@ import java.util.Map;
  *     c -- Continue until the next breakpoint
  */
 public class RomDebugger implements Debugger {
-    private final static int NUM_INSTRUCTIONS_PRINTED = 5;
     private final static String ERROR_FORMAT = "Unable to parse %s";
 
     private final BufferedReader _reader;
@@ -94,7 +93,7 @@ public class RomDebugger implements Debugger {
 
     @Override
     public void onBreak(EmulatorState state) {
-        printState(state);
+        DumpUtil.printEmulatorState(state);
 
         while (true) {
             System.out.print("> ");
@@ -165,7 +164,7 @@ public class RomDebugger implements Debugger {
         } else if (input.charAt(1) == 'i') {
             ByteScanner scanner = new ByteScanner(new MemoryByteSource(state.memory));
             scanner.seek(addr);
-            System.out.println(Util.readNextInstruction(_decoder, scanner));
+            System.out.println(DumpUtil.readNextInstruction(_decoder, scanner));
         } else {
             System.out.println(String.format(ERROR_FORMAT, input));
         }
@@ -198,43 +197,6 @@ public class RomDebugger implements Debugger {
 
         if (_breakpoints.containsKey(id))
             _breakpoints.remove(id);
-    }
-
-    private void printRegisters(EmulatorState state) {
-        System.out.println("Registers:");
-        System.out.println(String.format("\t\tAF: %s\t\tSP: %s",
-                Util.shortToHexString(Register16.AF.get(state)),
-                Util.shortToHexString(Register16.SP.get(state))));
-        System.out.println(String.format("\t\tBC: %s\t\tPC: %s",
-                Util.shortToHexString(Register16.BC.get(state)),
-                Util.shortToHexString(Register16.PC.get(state))));
-        System.out.println(String.format("\t\tDE: %s",
-                Util.shortToHexString(Register16.DE.get(state))));
-        System.out.println(String.format("\t\tHL: %s",
-                Util.shortToHexString(Register16.HL.get(state))));
-        System.out.println(String.format("\t\tZ:%d  N:%d  H:%d  C:%d",
-                state.registerState.flags.getZ(),
-                state.registerState.flags.getN(),
-                state.registerState.flags.getH(),
-                state.registerState.flags.getC()));
-    }
-
-    private void printNextInstructions(EmulatorState state) {
-        int address = Register16.PC.get(state) & 0xFFFF;
-
-        ByteScanner scanner = new ByteScanner(new MemoryByteSource(state.memory));
-        scanner.seek(address);
-
-        System.out.println();
-        for (int i = 0; i < NUM_INSTRUCTIONS_PRINTED; i++)
-            System.out.println("\t" + Util.readNextInstruction(_decoder, scanner));
-    }
-
-    private void printState(EmulatorState state) {
-        printRegisters(state);
-        System.out.println();
-
-        printNextInstructions(state);
     }
 
     public static void main(String[] args) throws IOException {
