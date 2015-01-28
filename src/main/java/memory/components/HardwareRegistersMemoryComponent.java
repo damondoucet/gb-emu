@@ -37,7 +37,7 @@ public class HardwareRegistersMemoryComponent extends MemoryComponent {
         HardwareRegister ret = null;
 
         for (HardwareRegister reg : _hardwareRegisters) {
-            if (reg.address == address) {
+            if (reg.isResponsibleFor(address)) {
                 if (ret != null) {
                     String error = String.format("Already found hardware " +
                             "register %s when %s matched (address %s)",
@@ -64,7 +64,7 @@ public class HardwareRegistersMemoryComponent extends MemoryComponent {
 
             return 0;
         } else {
-            return reg.value;
+            return reg.read(address);
         }
     }
 
@@ -77,7 +77,7 @@ public class HardwareRegistersMemoryComponent extends MemoryComponent {
             System.out.println(String.format("Write %s to MMIO Register %d (address %s)",
                     Util.byteToHexString(value), register, Util.shortToHexString(address)));
         } else {
-            reg.value = value;
+            reg.write(address, value);
         }
     }
 }
