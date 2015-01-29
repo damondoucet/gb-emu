@@ -93,25 +93,30 @@ public final class ArithmeticInstructions {
         state.registerState.flags.setC(newCarry);
     }
 
+    // The DEC instruction with 16-bit registers apparently doesn't update
+    // flags. wtf?
     private static void sub16(
             EmulatorState state,
             SettableValueContainer<Short> dest,
-            short val) {
+            short val,
+            boolean shouldUpdateFlags) {
         short a = dest.get(state);
 
         short newValue = (short)(a - val);
         dest.set(state, newValue);
 
-        state.registerState.flags.setZ(newValue == 0 ? 1 : 0);
-        state.registerState.flags.setN(1);
+        if (shouldUpdateFlags) {
+            state.registerState.flags.setZ(newValue == 0 ? 1 : 0);
+            state.registerState.flags.setN(1);
 
-        // Carries for sub are whether a borrow occurred
-        state.registerState.flags.setC((a & 0xFFFF) < (val & 0xFFFF) ? 1 : 0);
+            // Carries for sub are whether a borrow occurred
+            state.registerState.flags.setC((a & 0xFFFF) < (val & 0xFFFF) ? 1 : 0);
 
-        // half-carry for 16-bit is the most recent half-carry
-        short aHalf = Util.clearTopNibble(a);
-        short vHalf = Util.clearTopNibble(val);
-        state.registerState.flags.setH(aHalf < vHalf ? 1 : 0);
+            // half-carry for 16-bit is the most recent half-carry
+            short aHalf = Util.clearTopNibble(a);
+            short vHalf = Util.clearTopNibble(val);
+            state.registerState.flags.setH(aHalf < vHalf ? 1 : 0);
+        }
     }
 
     public static class Add8Instruction extends Instruction {
@@ -393,7 +398,7 @@ public final class ArithmeticInstructions {
 
         @Override
         public void execute(EmulatorState state) {
-            sub16(state, _container, (short)1);
+            sub16(state, _container, (short)1, false);
         }
     }
 
