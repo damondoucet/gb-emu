@@ -2,6 +2,11 @@ package memory.components;
 
 import cpu.EmulatorState;
 import memory.components.hardware_registers.HardwareRegister;
+import memory.components.hardware_registers.ReadonlyRegister;
+import memory.components.hardware_registers.graphics.DmaRegister;
+import memory.components.hardware_registers.graphics.LcdControllerRegister;
+import memory.components.hardware_registers.graphics.PaletteRegister;
+import memory.components.hardware_registers.graphics.StatRegister;
 import util.Util;
 
 /**
@@ -15,10 +20,48 @@ public class HardwareRegistersMemoryComponent extends MemoryComponent {
     private final EmulatorState _emulatorState;
     private final HardwareRegister[] _hardwareRegisters;
 
+    public final LcdControllerRegister lcdControllerRegister;
+    public final StatRegister statRegister;
+    public final HardwareRegister scrollY;
+    public final HardwareRegister scrollX;
+    public final ReadonlyRegister ly;
+    public final HardwareRegister lyc;
+    public final DmaRegister dmaRegister;
+    public final PaletteRegister bgPalette;
+
+    private final PaletteRegister _obj0Palette;
+    private final PaletteRegister _obj1Palette;
+    public final PaletteRegister[] objPalettes;
+
+    public final HardwareRegister windowY;
+    public final HardwareRegister windowX;
+
     public HardwareRegistersMemoryComponent(EmulatorState emulatorState) {
         _emulatorState = emulatorState;
-        _hardwareRegisters = new HardwareRegister[] {
 
+        lcdControllerRegister = new LcdControllerRegister();
+        statRegister = new StatRegister();
+        scrollY = new HardwareRegister((short)0xFF42);
+        scrollX = new HardwareRegister((short)0xFF43);
+        ly = new ReadonlyRegister((short)0xFF44);
+        lyc = new HardwareRegister((short)0xFF45);
+        dmaRegister = new DmaRegister();
+        bgPalette = new PaletteRegister((short)0xFF47);
+
+        _obj0Palette = new PaletteRegister((short)0xFF48);
+        _obj1Palette = new PaletteRegister((short)0xFF49);
+        objPalettes = new PaletteRegister[] { _obj0Palette, _obj1Palette };
+
+        windowY = new HardwareRegister((short)0xFF4A);
+        windowX = new HardwareRegister((short)0xFF4B);
+
+        _hardwareRegisters = new HardwareRegister[] {
+                lcdControllerRegister,
+                statRegister,
+                scrollY,
+                scrollX,
+                ly,
+                lyc
         };
     }
 

@@ -20,12 +20,14 @@ import java.util.List;
  */
 public class Memory {
     private final List<MemoryComponent> _components;
+    public final HardwareRegistersMemoryComponent regs;
 
     public Memory(EmulatorState state, MemoryBankController mbc) {
         Ram workRam = new Ram((short)0xC000, (short)0xE000);
 
         // TODO(ddoucet): Once Graphics is ready, the VRAM and OAM components
         // should be their own classes rather than simple RAM.
+        regs = new HardwareRegistersMemoryComponent(state);
 
         // MBC handles ROM (0000..7FFF) as well as cartridge RAM (A000..BFFF)
         _components = Arrays.asList(
@@ -35,7 +37,7 @@ public class Memory {
                 new EchoRam(workRam),
                 new Ram((short)0xFE00, (short)0xFF00),  // OAM/Sprite RAM
                 // FEA0..FEFF is unusable
-                new HardwareRegistersMemoryComponent(state),
+                regs,
                 new Ram((short)0xFF80, (short)0xFFFF),  // HRAM
                 new InterruptEnableMemoryComponent(state)
         );

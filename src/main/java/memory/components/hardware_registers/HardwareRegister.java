@@ -6,28 +6,20 @@ import util.Util;
 /**
  * Represents one of the registers in the region FF00..FF7F.
  */
-public class HardwareRegister  extends MemoryComponent {
+public class HardwareRegister extends MemoryComponent {
     private final short _address;
-    private byte _value;
+    public byte value;
 
-    protected HardwareRegister(short address) {
+    public HardwareRegister(short address) {
         _address = address;
-        _value = 0;
+        value = 0;
     }
     protected void setBit(int index, int value) {
-        _value = Util.setBit(_value, index, value);
-    }
-
-    protected void setBit(int index, boolean value) {
-        setBit(index, value ? 1 : 0);
+        this.value = Util.setBit(this.value, index, value);
     }
 
     protected int getBit(int index) {
-        return Util.getBit(_value, index);
-    }
-
-    protected boolean bitToBoolean(int index) {
-        return getBit(index) == 1;
+        return Util.getBit(value, index);
     }
 
     @Override
@@ -37,11 +29,35 @@ public class HardwareRegister  extends MemoryComponent {
 
     @Override
     protected byte uncheckedRead(short address) {
-        return _value;
+        return value;
     }
 
     @Override
     protected void uncheckedWrite(short address, byte value) {
-        _value = value;
+        this.value = value;
+    }
+
+    public class Flag {
+        private int _bitIndex;
+
+        public Flag(int bitIndex) {
+            _bitIndex = bitIndex;
+        }
+
+        public boolean get() {
+            return getBit() == 1;
+        }
+
+        public int getBit() {
+            return HardwareRegister.this.getBit(_bitIndex);
+        }
+
+        public void set(boolean value) {
+            setBit(value ? 1 : 0);
+        }
+
+        public void setBit(int value) {
+            HardwareRegister.this.setBit(_bitIndex, value);
+        }
     }
 }
