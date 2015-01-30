@@ -2,6 +2,7 @@ package memory;
 
 import cpu.EmulatorState;
 import memory.components.*;
+import memory.components.graphics.OamRam;
 import memory.components.memory_bank_controllers.MemoryBankController;
 import util.Util;
 
@@ -20,6 +21,8 @@ import java.util.List;
  */
 public class Memory {
     private final List<MemoryComponent> _components;
+
+    public final OamRam oam;
     public final HardwareRegistersMemoryComponent regs;
 
     public Memory(EmulatorState state, MemoryBankController mbc) {
@@ -28,6 +31,7 @@ public class Memory {
         // TODO(ddoucet): Once Graphics is ready, the VRAM and OAM components
         // should be their own classes rather than simple RAM.
         regs = new HardwareRegistersMemoryComponent(state);
+        oam = new OamRam(regs.lcdControllerRegister);
 
         // MBC handles ROM (0000..7FFF) as well as cartridge RAM (A000..BFFF)
         _components = Arrays.asList(
@@ -35,7 +39,7 @@ public class Memory {
                 new Ram((short)0x8000, (short)0xA000),  // VRAM
                 workRam,
                 new EchoRam(workRam),
-                new Ram((short)0xFE00, (short)0xFF00),  // OAM/Sprite RAM
+                oam,
                 // FEA0..FEFF is unusable
                 regs,
                 new Ram((short)0xFF80, (short)0xFFFF),  // HRAM
