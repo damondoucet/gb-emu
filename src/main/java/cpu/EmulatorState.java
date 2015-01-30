@@ -78,6 +78,10 @@ public class EmulatorState {
         int oldPc = Register16.PC.get(this);
         _scanner.seek(oldPc);
 
+        // TODO(ddoucet): Honestly the startNs should probably go before the
+        // decoder as well. I'm a little worried about the timing, though.
+        // Need to check this out once things are more stable/working.
+
         int cycles = _decoder.getMinimumCycles(_scanner);
 
         Instruction instr = _decoder.decodeNext(_scanner);
@@ -85,7 +89,7 @@ public class EmulatorState {
 
         long startNanoSeconds = System.nanoTime();
         instr.execute(this);
-        sleep(System.nanoTime() - startNanoSeconds, cycles);
+        sleep(startNanoSeconds, cycles);
 
         if (Register16.PC.get(this) == oldPc)
             Register16.PC.set(this, (short)_scanner.getIndex());
@@ -93,20 +97,8 @@ public class EmulatorState {
 
     // Sleep so that the amount of time the instruction required on hardware
     // is actually spent.
-    private void sleep(long expiredNanoSeconds, int instructionCycles) {
-        int sleepNs = (int)(NANO_SECONDS_PER_CYCLE * instructionCycles - expiredNanoSeconds);
-
-        // TODO(ddoucet): I should revisit this when things are looking a
-        // little more fleshed out. It seems like we never sleep--that the
-        // instructions are taking too long to execute. I wonder if that'll
-        // actually be a problem when actually playing the games?
-        if (sleepNs < 0)
-            return;
-
-        try {
-            Thread.sleep(0, sleepNs);
-        } catch (InterruptedException e) {
-        }
+    private void sleep(long start, int instructionCycles) {
+        Clock.waitUntil(start, (long)(instructionCycles * NANO_SECONDS_PER_CYCLE));
     }
 
     public void halt() {
