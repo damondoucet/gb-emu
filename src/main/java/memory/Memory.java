@@ -28,8 +28,8 @@ public class Memory {
     public Memory(EmulatorState state, MemoryBankController mbc) {
         Ram workRam = new Ram((short)0xC000, (short)0xE000);
 
-        // TODO(ddoucet): Once Graphics is ready, the VRAM and OAM components
-        // should be their own classes rather than simple RAM.
+        // TODO(ddoucet): When VRAM is done, it should be its own class here,
+        // rather than simple RAM.
         regs = new HardwareRegistersMemoryComponent(state);
         oam = new OamRam(regs.lcdControllerRegister);
 

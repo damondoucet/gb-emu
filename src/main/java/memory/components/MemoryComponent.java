@@ -20,6 +20,9 @@ public abstract class MemoryComponent {
 
     /*
      * Whether this component is responsible for the given address.
+     *
+     * TODO(ddoucet): A lot of the extending classes of MemoryComponent could
+     * use the Guava Range<T> class.
      */
     public abstract boolean isResponsibleFor(short address);
 

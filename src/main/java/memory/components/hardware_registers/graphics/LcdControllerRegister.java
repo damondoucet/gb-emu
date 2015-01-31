@@ -2,6 +2,8 @@ package memory.components.hardware_registers.graphics;
 
 import memory.components.hardware_registers.HardwareRegister;
 
+import static com.google.common.base.Preconditions.*;
+
 /**
  * Represents the LCDC Register
  */
@@ -34,6 +36,14 @@ public class LcdControllerRegister extends HardwareRegister {
 
     public int getSpriteHeight() {
         return _objBlockComposition.getBit() == 0 ? SPRITE_HEIGHT_0 : SPRITE_HEIGHT_1;
+    }
+
+    // Useful for testing
+    public void setSpriteHeight(int height) {
+        checkArgument(height == SPRITE_HEIGHT_0 || height == SPRITE_HEIGHT_1,
+                "%s not legal sprite height", height);
+
+        _objBlockComposition.set(height == SPRITE_HEIGHT_1);
     }
 
     private final static short START_ADDR_0 = (short)0x9800;
