@@ -15,13 +15,13 @@ import static com.google.common.base.Preconditions.*;
  */
 public class Sprite implements Comparable<Sprite> {
     private final LcdControllerRegister _lcdc;
-    public final byte y;
-    public final byte x;
-    private final byte _tile;
-    public final boolean priority;
-    public final boolean yflip;
-    public final boolean xflip;
-    public final int palette;
+    public byte y;
+    public byte x;
+    private byte _tile;
+    public boolean priority;
+    public boolean yflip;
+    public boolean xflip;
+    public int palette;
 
     public Sprite(LcdControllerRegister lcdc,
                   byte y, byte x, byte tile,
@@ -35,6 +35,15 @@ public class Sprite implements Comparable<Sprite> {
         this.yflip = yflip;
         this.xflip = xflip;
         this.palette = palette;
+    }
+
+    public Sprite(LcdControllerRegister lcdc,
+                  byte y, byte x, byte tile, byte flags) {
+        _lcdc = lcdc;
+        this.y = y;
+        this.x = x;
+        _tile = tile;
+        setFlagsByte(flags);
     }
 
     public byte getTile() {
@@ -53,6 +62,13 @@ public class Sprite implements Comparable<Sprite> {
         return new Sprite(lcdc, (byte)0, (byte)0, (byte)0, false, false, false, 0);
     }
 
+    public void setFlagsByte(byte flags) {
+        priority = Util.getBit(flags, 7) == 1;
+        yflip = Util.getBit(flags, 6) == 1;
+        xflip = Util.getBit(flags, 5) == 1;
+        palette = Util.getBit(flags, 4);
+    }
+
     // Four bytes: y, x, tile, and flags.
     // Flags: bit 7 - priority; bit 6 - y flip; bit 5 - xflip; bit 4 - palette
     // All other bits unused.
@@ -62,12 +78,8 @@ public class Sprite implements Comparable<Sprite> {
         byte tile = scanner.readByte();
         byte flags = scanner.readByte();
 
-        boolean priority = Util.getBit(flags, 7) == 1;
-        boolean yflip = Util.getBit(flags, 6) == 1;
-        boolean xflip = Util.getBit(flags, 5) == 1;
-        int palette = Util.getBit(flags, 4);
 
-        return new Sprite(lcdc, y, x, tile, priority, yflip, xflip, palette);
+        return new Sprite(lcdc, y, x, tile, flags);
     }
 
     // index is 0..3, which byte of the Sprite is to be read.
@@ -86,6 +98,21 @@ public class Sprite implements Comparable<Sprite> {
             int b6 = yflip ? 1 : 0;
             int b5 = xflip ? 1 : 0;
             return (byte)(((((((b7 << 1) | b6) << 1) | b5) << 1) | palette) << 4);
+        }
+    }
+
+    public void writeByte(int index, byte value) {
+        checkArgument(index >= 0 && index <= 3,
+                "%s not legal argument to readByte", index);
+
+        if (index == 0) {
+            y = value;
+        } else if (index == 1) {
+            x = value;
+        } else if (index == 2) {
+            _tile = value;
+        } else {  // index == 3
+            setFlagsByte(value);
         }
     }
 

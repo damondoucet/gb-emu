@@ -130,9 +130,7 @@ public class OamRam extends MemoryComponent {
 
     @Override
     protected void uncheckedWrite(short address, byte value) {
-        // TODO(ddoucet): same comment as ReadonlyRegister.
-        String error = String.format("Illegal write to OAM address %s (value %s)",
-                Util.shortToHexString(address), Util.byteToHexString(value));
-        throw new UnsupportedOperationException(error);
+        int index = (address & 0xFFFF) - (OAM_START & 0xFFFF);
+        sprites[index / 4].writeByte(index % 4, value);
     }
 }
