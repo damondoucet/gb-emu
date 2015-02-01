@@ -46,10 +46,10 @@ public class HardwareRegistersMemoryComponent extends MemoryComponent {
         ly = new ReadonlyRegister((short)0xFF44);
         lyc = new HardwareRegister((short)0xFF45);
         dmaRegister = new DmaRegister();
-        bgPalette = new PaletteRegister((short)0xFF47);
+        bgPalette = new PaletteRegister((short)0xFF47, (byte)0xFC);
 
-        _obj0Palette = new PaletteRegister((short)0xFF48);
-        _obj1Palette = new PaletteRegister((short)0xFF49);
+        _obj0Palette = new PaletteRegister((short)0xFF48, (byte)0xFF);
+        _obj1Palette = new PaletteRegister((short)0xFF49, (byte)0xFF);
         objPalettes = new PaletteRegister[] { _obj0Palette, _obj1Palette };
 
         windowY = new HardwareRegister((short)0xFF4A);

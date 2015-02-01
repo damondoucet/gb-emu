@@ -14,8 +14,9 @@ import memory.components.hardware_registers.HardwareRegister;
  * (color 0).
  */
 public class PaletteRegister extends HardwareRegister {
-    public PaletteRegister(short address) {
+    public PaletteRegister(short address, byte initialValue) {
         super(address);
+        value = initialValue;
     }
 
     public int getColor(int index) {
